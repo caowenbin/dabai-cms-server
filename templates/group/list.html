@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.css') }}">
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li class="active">频道管理</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="alert alert-block">
+                        <form class="form-inline all_query_kwargs">
+                            <label class="inline">
+                                <span class="lbl">频道名称</span>
+                                <input type="text" name="name"
+                                       value="{{ query_kwargs.name|default("", True) }}"/>
+                            </label>
+                            <label class="inline margin-left-10">
+                                <span class="lbl">频道编码</span>
+                                <input type="text" name="channel_code"
+                                       value="{{ query_kwargs.channel_code|default("", True) }}"/>
+                            </label>
+                            <label class="inline margin-left-10">
+                                <span class="lbl">变更时间段</span>
+                                <input type="text" class="query_time" placeholder="开始时间"
+                                       value="{{ query_kwargs.start_time|default("", True) }}"
+                                       name="start_time"/>
+                                <input type="text" class="query_time" placeholder="结束时间"
+                                       value="{{ query_kwargs.end_time|default("", True) }}"
+                                       name="end_time"/>
+                            </label>
+                            <label class="inline margin-left-10">
+                                <span class="lbl">渠道</span>
+                                <select class="chosen-select col-xs-10 col-sm-4 width-15"
+                                        id="channel_code"
+                                        name="channel_code"
+                                        data-placeholder=" ">
+                                    <option value="">&nbsp;</option>
+                                    {% for v in channel_codes %}
+                                        <option value="{{ v.channel_code }}"
+                                                {% if query_kwargs.channel_code == v.channel_code %}selected{% endif %}>{{ v.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <button type="submit" class="btn btn-info btn-sm margin-left-10">
+                                查询
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="tabbable">
+                            <ul id="inbox-tabs"
+                                class="inbox-tabs nav nav-tabs padding-16 tab-size-bigger tab-space-1">
+                                <li class="li-new-mail pull-right">
+                                    <a href="{{ url_for('.create_view') }}"
+                                       class="btn-new-mail">
+                                    <span class="btn bt1n-small btn-purple no-border">
+                                        <i class=" icon-plus bigger-130"></i>
+                                        <span class="bigger-110">增加频道</span>
+                                    </span>
+                                    </a>
+                                </li>
+                            {% for tab in tabs_list %}
+                                {% set is_active = query_kwargs.query_type == tab.query_type %}
+                                <li {% if is_active %}class="active"{% endif %}>
+                                    <a href="{{ url_for('.list_view', query_type=tab.query_type) }}">
+                                        <span class="bigger-110">{{ tab.name }}</span>
+                                        <span class="badge badge-pink">
+                                            {% if is_active %}
+                                                {{ count }}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+
+                            <div class="table-responsive margin-top-20">
+                                <table id="sample-table-1"
+                                       class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <label>
+                                                <input type="checkbox" class="ace"/>
+                                                <span class="lbl"></span>
+                                                &nbsp;
+                                                {{ actionlib.dropdown(actions) }}
+                                            </label>
+                                        </th>
+                                       {% for column in column_list %}
+                                            <th class="{{ column_widget_args.get(column).class }}">{{ column_labels.get(column, column) }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for item in data %}
+                                        <tr>
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" id="rowid" name="rowid"
+                                                           class="ace action-checkbox"
+                                                           value="{{ item.id }}"/>
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="padding-lr-5">
+                                                <div class="action-buttons">
+                                                    <a class="blue" data-toggle="tooltip" data-placement="top" title="查看详情"
+                                                       href="{{ url_for('.detail_view') }}?id={{ item.id }}&return_url={{ return_url }}">
+                                                        <i class="icon-zoom-in bigger-130"></i>
+                                                    </a>
+                                                    <a class="green" data-toggle="tooltip" data-placement="top" title="修改"
+                                                       href="{{ url_for('.edit_view') }}?id={{ item.id }}&return_url={{ return_url }}">
+                                                        <i class="icon-pencil bigger-130"></i>
+                                                    </a>
+                                                    <a class="red" data-toggle="tooltip"
+                                                       data-placement="top" title="删除"
+                                                       href="javascript:operation('{{ url_for('.delete_view') }}', '{{ item.id }}', '你确定要删除此记录?');">
+                                                        <i class="icon-trash bigger-130"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            {% for c in column_list %}
+                                                <td class="{{ column_widget_args.get(c).class }}">
+                                                    {% if c == "validity" %}
+                                                        {% if item[c] %}
+                                                            <span class="label label-success arrowed">正常</span>
+                                                        {% else %}
+                                                            <span class="label label-warning arrowed">注销</span>
+                                                        {% endif %}
+                                                    {% elif c == "is_home" %}
+                                                        {% if item[c] %}
+                                                            <i class="icon-ok green"></i>{% endif %}
+                                                    {% elif c == "channels" %}
+                                                        {{ item[c]|join(" / ") }}
+                                                    {% else %}
+                                                        {{ item[c]|default("", True) }}
+                                                    {% endif %}
+                                                </td>
+
+                                            {% endfor %}
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="999">
+                                                <div class="text-center">
+                                                    表无记录!
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="page-no-content">
+                                {{ layout.pager(page, num_pages, pager_url) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ actionlib.form(actions, url_for('.action_view')) }}
+    {{ super() }}
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.full.min.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    {{ actionlib.script("至少选择一项", actions, actions_confirmation) }}
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('.query_time').datetimepicker({yearStart:2016 });
+            $(".chosen-select").chosen();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'layer_base.html' %}
+{% block head_css %}
+    {{ super() }}
+    <link href="{{ static_url('jquery/ztree/zTreeStyle.css') }}" rel="stylesheet">
+{% endblock %}
+{% block page_content %}
+    {{ super() }}
+    <input type="hidden" name="group_template_id"
+           value="{{ data.group_template_id }}">
+    <input type="hidden" name="group_id" value="{{ data.group_id }}">
+    <input type="hidden" name="page_type" value="category">
+    <div class="form-group default-form-group">
+        <div class="col-sm-12">
+            <input type="hidden" name="category_names" value="">
+             <input type="hidden" name="categories" value="">
+
+            <ul id="product_category" class="ztree"></ul>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/ztree/jquery.ztree.core.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/ztree/jquery.ztree.excheck.min.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        var setting = {
+            view: {
+                showIcon: false
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onCheck: onCheck
+            }
+        };
+        var zNodes = new Array();
+        {% for c in data.category_list %}
+            zNodes.push({
+                "id": {{c.id}},
+                "pId": {{c.pId}},
+                "name": "{{ c.name }}",
+                "data": {{c.data}},
+                "checked": {{ c.checked|default("false", True) }}
+            });
+        {% endfor %}
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#product_category"), setting, zNodes);
+        });
+        function onCheck(e, treeId, treeNode) {
+            var treeObj = $.fn.zTree.getZTreeObj("product_category"),
+                    nodes = treeObj.getCheckedNodes(true),
+                    v = "";
+            var category_names = "";
+            for (var i = 0; i < nodes.length; i++) {
+                var $o = nodes[i];
+                if ($o.data == 3) {
+                    v += $o.id + ";";
+                    category_names += $o.name + ";";
+                }
+            }
+            console.log("ID:"+v, "name:"+category_names);
+            $('input[name="categories"]').attr('value', v);
+            $('input[name="category_names"]').attr('value', category_names);
+        }
+    </script>
+    {{ super() }}
+{% endblock %}

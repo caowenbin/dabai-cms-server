@@ -1,0 +1,52 @@
+{% import 'group/step.html' as steplib with context %}
+{% import 'group/tpl_libs.html' as tpllib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">频道管理</a></li>
+        <li>频道详情</li>
+        <li class="active">第2步:模板内容</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="row">
+                    {{ steplib.detail_step_content(2, group_id, return_url_str) }}
+                    <div class="col-md-1"></div>
+                    <div class="group-template-contents col-md-9">
+                        {% for v in data %}
+                            {% set tpl_code = v.template_code %}
+                            {% if tpl_code == "T-001" %}
+                                {{ tpllib.template_1(sys_methods, v, is_edit=0) }}
+                            {% elif tpl_code == "T-002" %}
+                                {{ tpllib.template_2(sys_methods, v, is_edit=0) }}
+                            {% elif tpl_code == "T-003" %}
+                                {{ tpllib.template_3(sys_methods, v, is_edit=0) }}
+                            {% elif tpl_code == "T-004" %}
+                                {{ tpllib.template_4(sys_methods, v, is_edit=0) }}
+                            {% elif tpl_code == "T-005" %}
+                                {{ tpllib.template_5(sys_methods, v, is_edit=0) }}
+                            {% elif tpl_code == "T-006" %}
+                                {{ tpllib.template_6(v, is_edit=0) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div></div>
+                    <div class="clearfix">
+                        <div class="col-md-offset-3 col-md-9">
+                             <a class="btn btn-info" href="{{ return_url }}">
+                                <i class="icon-mail-reply-all bigger-110"></i>
+                                返回
+                            </a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

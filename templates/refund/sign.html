@@ -1,0 +1,58 @@
+{% extends 'layer_base.html' %}
+{% block page_content %}
+    {{ super() }}
+    <input type="hidden" name="return_url" value="{{ data.return_url }}">
+    {% set refund_info = data.refund_info %}
+    {% set refund_goods = data.refund_goods %}
+    <input type="hidden" name="id" value="{{ refund_info.id }}">
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">所属订单号 </label>
+        <label class="col-sm-3 control-label-left">{{ refund_info.order_no }}</label>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">退款服务号 </label>
+        <label class="col-sm-3 control-label-left">{{ refund_info.refund_no }}</label>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">退款原因 </label>
+        <label class="col-sm-3 control-label-left">
+            {{ _(refund_info.refund_reason_code|int|constants(name="refundreason", is_name=True)) }}
+        </label>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">问题说明 </label>
+        <label class="col-sm-8 control-label-left">{{ refund_info.remark }}</label>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">退货商品 </label>
+        <label class="col-sm-8 control-label-left">
+            商品名: &nbsp;&nbsp;{{ refund_goods.goods_fullname }}<br>
+            规格: &nbsp;&nbsp;{{ refund_goods.goods_specs }}<br>
+            数量: &nbsp;&nbsp;{{ refund_goods.quantity }}
+        </label>
+    </div>
+    {% if data.order_invoice %}
+        <div class="form-group default-form-group">
+            <label class="col-sm-2 control-label no-padding-right">验证的发票 </label>
+            <label class="col-sm-3 control-label-left">{{ refund_info.refund_no }}</label>
+        </div>
+    {% endif %}
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">签收选项 </label>
+        <div class="col-sm-9">
+            <input type="checkbox" name="sign_goods"
+                   class="ace action-checkbox"
+                   value="1" data-easyform="number;"
+                       data-message="商品签收必选"
+                       data-easytip="class:easy-blue;position:top;"/>
+            <span class="lbl">商品已收</span>
+            &nbsp;&nbsp;&nbsp;
+            {% if data.order_invoice %}
+                <input type="checkbox" name="sign_invoice"
+                       class="ace action-checkbox"
+                       value="1"/>
+                <span class="lbl">发票已收</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

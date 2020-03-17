@@ -1,0 +1,54 @@
+{% extends 'layer_base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+{% block page_content %}
+    {{ super() }}
+    <input type="hidden" name="refund_no" value="{{ data.refund_no }}">
+    <input type="hidden" name="return_url" value="{{ data.return_url }}">
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">退款服务号 </label>
+        <label class="col-sm-3 control-label-left">{{ data.refund_no }}</label>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">快递公司 </label>
+        <div class="col-sm-9">
+            <select class="chosen-select col-xs-10 col-sm-9" id="express_code"
+                    name="express_code" data-easyform="length:1 30;char-normal;"
+                    data-message="请选择对应的快递公司"
+                    data-easytip="class:easy-blue;position:top;">
+                <option value="">&nbsp;</option>
+                {% for item in "expresscompany"|constant_list %}
+                    <option value="{{ item.value }}"> {{ _(item.name) }} </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-2 control-label no-padding-right">快递单号 </label>
+        <div class="col-sm-9">
+            <input type="text" id="send_track_no" name="track_no"
+                   class="col-xs-10 col-sm-9" placeholder="由6-19位英文、数字组成"
+                   data-easyform="length:6 19;char-english;"
+                   data-message="请输入由6-19位英文、数字组成的单号"
+                   data-easytip="class:easy-blue;position:right;"/>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".chosen-select").chosen();
+        });
+
+    </script>
+{% endblock %}

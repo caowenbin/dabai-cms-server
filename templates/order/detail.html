@@ -1,0 +1,67 @@
+{% import 'order/lib.html' as orderlib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li>
+            <a href="{{ back_url }}">订单管理</a>
+        </li>
+        <li class="active">订单详情</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="tabbable">
+                            <ul id="inbox-tabs"
+                                class="inbox-tabs nav nav-tabs padding-16 tab-size-bigger tab-space-1">
+                                <li {% if query_kwargs.query_type == 0 %}class="active"{% endif %}>
+                                    <a href="{{ url_for('order_detail') }}?query_type=0&id={{ query_kwargs.order_id }}&order_no={{ query_kwargs.order_no }}&return_url={{ return_url }}">
+                                        <span class="bigger-110">订单基本信息</span>
+                                    </a>
+                                </li>
+
+                                <li {% if query_kwargs.query_type == 1 %}class="active"{% endif %}>
+                                    <a href="{{ url_for('order_detail') }}?query_type=1&id={{ query_kwargs.order_id }}&order_no={{ query_kwargs.order_no }}&return_url={{ return_url }}">
+                                        <span class="bigger-110">订单商品信息</span>
+                                    </a>
+                                </li>
+
+                                <li {% if query_kwargs.query_type == 2 %}class="active"{% endif %}>
+                                    <a href="{{ url_for('order_detail') }}?query_type=2&id={{ query_kwargs.order_id }}&order_no={{ query_kwargs.order_no }}&return_url={{ return_url }}">
+                                        <span class="bigger-110">物流信息</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="table-responsive margin-top-20">
+                                {% if query_kwargs.query_type == 0 %}
+                                    {{ orderlib.OrderBasic(results) }}
+                                {% endif %}
+                                {% if query_kwargs.query_type == 1 %}
+                                    {{ orderlib.OrderGoods(results) }}
+                                {% endif %}
+
+                                {% if query_kwargs.query_type == 2 %}
+                                    {{ orderlib.OrderExpress(results) }}
+                                {% endif %}
+                            </div>
+                            <div class="clearfix">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a class="btn btn-info" href="{{ back_url }}">
+                                        <i class="icon-mail-reply-all bigger-110"></i>
+                                        返回
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

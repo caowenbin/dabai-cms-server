@@ -1,0 +1,70 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+     <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>商品详情</li>
+        <li class="active">第4步:图文说明</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.detail_step_content(4, product_id, return_url_str) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        <div class="form-group">
+                                <div class="col-sm-10" id="wxcontent" style="position: relative;">
+                                    <ul class="nav nav-tabs" id="templateContent">
+                                        <li class="active"><a data-type="phone">手机端</a>
+                                        </li>
+                                        <li><a data-type="pad">平板端</a></li>
+                                    </ul>
+                                    <!--富文本编辑器-->
+                                    <div class="webedith" id="content-phone">
+                                            {{ data.image_text|safe|default("暂无内容", True) }}
+                                    </div>
+                                    <div class="webedith" id="content-pad" >
+                                            {{ data.image_text_pad|safe|default("暂无内容", True) }}
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a class="btn btn-info" href="{{ return_url }}">
+                                <i class="icon-mail-reply-all bigger-110"></i>
+                                返回
+                            </a>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+
+        $(function () {
+            //Content切换
+            $("#templateContent a").click(function (e){
+                e.preventDefault();
+                $(this).tab('show');
+                dataType = $(this).attr("data-type");
+                $("div#wxcontent>div[id*='content']").hide();
+                $("#content-" + dataType).show();
+            });
+        });
+
+
+    </script>
+{% endblock %}
+

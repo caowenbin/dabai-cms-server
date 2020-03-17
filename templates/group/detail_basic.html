@@ -1,0 +1,142 @@
+{% import 'group/step.html' as steplib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">频道管理</a></li>
+        <li>频道详情</li>
+        <li class="active">第1步:基本信息及模板</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.detail_step_content(1, data.id, return_url_str) }}
+
+                    <form class="form-horizontal" name="pop" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="group_code">
+                                <span class="red">*</span>频道编码 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">{{ data.group_code }}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="name">
+                                <span class="red">*</span>频道名称 </label>
+
+                            <div class="col-sm-9">
+                               <label class="col-sm-3 control-label-left">{{ data.name }}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="channel_code">
+                                <span class="red">*</span>渠道 </label>
+
+                            <div class="col-sm-9">
+                            <label class="col-sm-3 control-label-left">{{ data.channel_names|join(" / ") }}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="is_home">
+                                是否作为首页 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {% if  data.is_home == 0 %}否{% else %}是{% endif %}
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="ordering">
+                                <span class="red">*</span>位置 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.ordering }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="validity">
+                                状态 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                     {% if data.validity == 1 %}显示{% else %}隐藏{% endif %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">
+                                <span class="red">*</span> 栏目选项 </label>
+                            <div class="col-sm-9">
+                                <div class="group-templates">
+                                    {% for t in data.template_list %}
+                                        {% set icon_url = t.column_icon %}
+                                        {% set is_show_icon = t.is_show_icon %}
+                                    <div class="inline-field col-sm-6 editMode">
+                                        <ul class="list-unstyled padding-top-10">
+                                            <li>
+                                                <input type="text" name="column_name" value="{{ t.column_name }}" readonly
+                                                       placeholder="栏目名称">
+                                                <input type="checkbox" name="show_name" {% if t.is_show_name %} checked{% endif %}
+                                                       readonly value="1" disabled> 显示
+                                            </li>
+                                            <li style="border-bottom: dashed 2px #D3D4D3;">
+                                                <input type="checkbox" name="show_icon" {% if t.is_show_icon %} checked{% endif %}
+                                                       disabled
+                                                       value="1">
+                                                显示图标
+                                                <button id="uploader_desc"
+                                                        type="button"
+                                                        class="btn btn-minier margin-left-10">
+                                                    <i class="icon-picture">上传图标</i>
+                                                </button>
+
+                                                <div id="uploader_contents"
+                                                     class="uploader_contents"
+                                                     style="margin:10px 20px;">
+                                                    {% if icon_url %}
+                                                    <img src="{{ icon_url }}">
+                                                    {% endif %}
+                                                </div>
+                                            </li>
+                                            <li>
+                                                  <img src="{{ static_url("images/tpl/{}".format(template_code_list[t.template_code]["tpl"])) }}">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                       <div class="clearfix">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn btn-info" href="{{ return_url }}">
+                                <i class="icon-mail-reply-all bigger-110"></i>
+                                返回
+                            </a>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

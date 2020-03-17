@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ static_url('webuploader/webuploader.css') }}">
+    {{ super() }}
+{% endblock %}
+{% block head_tail %}
+    <style>
+        #uploader .filelist li {
+            width: 390px;
+            height: auto;
+            max-height: 181px;
+            text-align: center;
+            margin: 0 8px 18px 0;
+            position: relative;
+            display: inline;
+            float: left;
+            overflow: hidden;
+            font-size: 12px;
+            border: solid 1px #DDDDDD;
+            border-radius: 4px;
+            padding: 3px;
+        }
+
+        .li-feng {
+            display: none;
+        }
+
+        #uploader .filelist div.file-panel span.feng {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">轮播图管理</a></li>
+        <li class="active">新增轮播图</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="name">
+                                <span class="red">*</span>名称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="name" name="name"
+                                       class="col-xs-10 col-sm-5"
+                                       placeholder="请输入由1-25位由中文、英文、数字、下划线组成的名字"
+                                       data-easyform="length:1 25;char-chinese;"
+                                       data-message="请输入由1-25位由中文、英文、数字、下划线组成的名字"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="banner_type">
+                                <span class="red">*</span>所属类型及跳转值 </label>
+
+                            <div class="col-sm-9">
+                                <select class="chosen-select width-15" id="banner_type"
+                                        name="banner_type"
+                                        data-placeholder=" " data-easyform="null;">
+                                    {% for k, v in data.banner_types.iteritems() %}
+                                        <option value="{{ k }}">{{ v }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="float-left">
+                                    <div id="all_select_contents" style="display: inline-block;">
+                                        <select class="chosen-select width-250" id="select_target"
+                                                name="select_target" data-placeholder="-- 无数据可选,请换其他的 --" data-easyform="length:1 50;char-normal;"
+                                        data-message="请选择对应的跳转值"
+                                        data-easytip="class:easy-blue;position:right;">
+                                            {% for v in data.select_content_list %}
+                                                <option value="{{ v.id }}">{{ v.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <input type="hidden" id="url_target" class="width-380"
+                                           name="url_target" data-placeholder="请输入对应的跳转值,长度为200位以内的url"
+                                           data-easyform="length:1 200;"
+                                        data-message="请输入对应的跳转值,长度为200位以内的url"
+                                        data-easytip="class:easy-blue;position:right;"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="remark">
+                                备注 </label>
+
+                            <div class="col-sm-9">
+                                    <textarea id="remark" name="remark"
+                                              class="col-xs-10 col-sm-5" rows="3"
+                                              placeholder="最大长度28位"
+                                              data-easyform="null; length:0 28;"
+                                              data-message="最大长度28位"
+                                              data-easytip="class:easy-blue;position:right;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="image">
+                                <span class="red">*</span>图片 </label>
+
+                            <div class="col-sm-9">
+                                <div id="filePicker"
+                                     data-easytip="position:bottom;class:easy-blue;"
+                                     data-easytip-message="必须成功上传轮播图"></div>
+                                <span style="color:red;">每张图片限1M, 最多限上传1张, 带对勾的代表成功上传.</span>
+                                <div id="uploader" class="wu-example" style="width: 70%">
+                                    <div class="queueList filled"></div>
+                                    <div class="statusBar" style="display:none;">
+                                        <div class="progress">
+                                            <span class="text">0%</span>
+                                            <span class="percentage"></span>
+                                        </div>
+                                        <div class="info"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('webuploader/webuploader.nolog.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('webuploader/images_upload.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/pages/verify_upload.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/pages/banner.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    <script type="text/javascript">
+        uploader.options.swf = "{{ static_url('webuploader/Uploader.swf') }}";
+        uploader.options.server = '{{ url_for('uploader.upload_images_view') }}?p=banner';
+        uploader.options.fileNumLimit = 1;
+    </script>
+{% endblock %}
+

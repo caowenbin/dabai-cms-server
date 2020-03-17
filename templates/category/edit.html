@@ -1,0 +1,14 @@
+{% extends 'layer_base.html' %}
+
+{% block page_content %}
+    {{ super() }}
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="category_name">分类名称 </label>
+        <div class="col-sm-9">
+            <input type="hidden" name="id" value="{{ data.id }}">
+            <input type="hidden" name="return_url" value="{{return_url }}">
+            <input type="text" id="category_name" name="category_name" class="col-xs-10 col-sm-9" value="{{ data.name }}"
+                   data-easyform="length:2 16;" data-message="分类名必须为2—16位的英文字母数字或汉字" data-easytip="class:easy-blue;position:top;"/>
+        </div>
+    </div>
+{% endblock %}

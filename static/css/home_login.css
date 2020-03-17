@@ -1,0 +1,133 @@
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, fieldset, input { padding: 0; margin: 0;}
+h1, h2, h3, h4, h5, h6, pre, code, address, caption, cite, code, em, strong, table, th, td { font-size: 1em; font-style: normal; font-weight: normal;}
+input[type="text"], input[type="password"], input.text, input.password { font: 12px/20px Arial; color: #777; background-color: #FFF; vertical-align: top; display: inline-block; height: 20px; padding: 4px; border: solid 1px #E6E9EE; outline: 0 none;}
+input[type="text"]:focus, input[type="password"]:focus, input.text:focus, input.password:focus, textarea:focus { color: #333; border-color: #CCD0D9; outline: 0 none;}
+input[type="text"].error, input[type="password"].error, textarea.error { border: dashed 1px #ED5564; outline: 0 none;}
+.submit-border { vertical-align: middle; display: inline-block; *display: inline/*IE6,7*/; *zoom: 1;}
+input[type="submit"],
+input.submit,
+a.submit { font-size: 12px; line-height: 30px; font-weight: bold; color: #FFF; background-color: #48CFAE; display: block; height: 30px; padding: 0 20px; border-radius: 3px; border: none 0; cursor: pointer; }
+input[type="submit"]:hover,
+input.submit:hover,
+a.submit:hover { text-decoration: none; color: #FFF; background-color: #36BC9B;}
+
+/*页面整体宽度控制*/
+.wrapper { width: 1200px; margin: auto;}
+/* 公用头部区域
+-------------------------------------- */
+.header-wrap { background-color: #FFF; width: 100%;}
+.public-head-layout { height: 100px;}
+/* 站点logo */
+.public-head-layout .site-logo { width: 240px; height: 60px; float: left; margin: 15px 10px auto 0;}
+.public-head-layout .site-logo img { max-width: 240px; max-height: 60px;}
+
+.public-head-layout .nc-regist-now {
+    font-size: 14px;
+    color: #AAA;
+    line-height: 20px;
+    float: right;
+    height: 40px;
+    margin-top: 30px;
+}
+/*.public-head-layout .nc-regist-now span {*/
+    /*vertical-align: middle;*/
+    /*display: inline-block;*/
+/*}*/
+
+.header-wrap { width: 99%; height: 80px; border-bottom: solid 2px #F5F5F5; margin: 5px auto 0 auto;}
+.public-head-layout { height: 80px;}
+.header-wrap .wrapper { width: 1000px}
+
+.tabs-nav { font-size: 0;  word-spacing:-1em; border-bottom: solid 1px #E6E6E6;}
+.tabs-nav li { vertical-align: bottom; letter-spacing: normal; word-spacing: normal; text-align: center; display: inline-block; *display: inline; width: 50%; height: 40px; margin-bottom: -1px; *zoom: 1;}
+.tabs-nav li a { font-size: 18px; color: #999; line-height: 24px; padding-bottom: 13px; position: relative; z-index: 1;}
+.tabs-nav li a:hover { text-decoration: none; color: #000;}
+.tabs-nav li a.tabulous_active { color: #F32613; display: block; border-bottom: 3px solid #F32613}
+.tabs-nav li a i { font-size: 0; line-height: 0; border-color: #F32613 transparent transparent transparent; border-style: solid dashed dashed dashed; border-width: 7px; display: none; width: 0; height: 0; margin-left: -4px; position: absolute; z-index: 1; left: 50%; bottom: -17px;}
+.tabs-nav li a.tabulous_active i { display: block;}
+.tabs-container { position: relative; z-index: 1;}
+.nc-login-form { display: block;}
+.nc-login-form dl { background-color: #FFF; width: 398px; height: 52px; margin-top: -1px; border: solid 1px #E6E6E6; position: relative; z-index: 1;}
+.nc-login-form dl.focus { border-color: #7ABD54; z-index: 3;}
+.nc-login-form dl dt { font-size: 14px; line-height: 20px; color: #666; width: 72px; padding: 16px 0 16px 20px; float: left;}
+.nc-login-form dl dd { height: 28px; float: left; padding: 12px 0;}
+.nc-login-form dl dd .text { font-family: "microsoft yahei"; font-size: 14px; line-height: 28px; width: 290px; height: 28px; padding: 0; border: none 0;}
+.nc-login-form .submit-div { margin-top: 15px;}
+.nc-login-form .submit-div .submit { font-family: "microsoft yahei"; font-size: 16px; font-weight: 600; color: #FFF; background-color: #F32613; width: 398px; height: 42px; border: solid 1px #D91E17; border-radius: 3px; cursor: pointer;}
+
+.transition { -webkit-transition: all .3s ease-in-out; -moz-transition: all .3s ease-in-out; -o-transition: all .3s ease-in-out; -ms-transition: all .3s ease-in-out; transition: all .3s ease-in-out; -webkit-transition-delay: .3s; -moz-transition-delay: .3s; -o-transition-delay: .3s; -ms-transition-delay: .3s; transition-delay: .3s; }
+.make_transist { -webkit-transition: all .3s ease-in-out; -moz-transition: all .3s ease-in-out; -o-transition: all .3s ease-in-out; -ms-transition: all .3s ease-in-out; transition: all .3s ease-in-out; }
+.hidescale { -webkit-transform: scale(0.9); -moz-transform: scale(0.9); -o-transform: scale(0.9); -ms-transform: scale(0.9); transform: scale(0.9); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); filter: alpha(opacity=0); opacity: 0; }
+.showscale { -webkit-transform: scale(1); -moz-transform: scale(1); -o-transform: scale(1); -ms-transform: scale(1); transform: scale(1); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); opacity: 1; -webkit-transition-delay: .3s; -moz-transition-delay: .3s; -o-transition-delay: .3s; -ms-transition-delay: .3s; transition-delay: .3s; }
+.hideleft { -webkit-transform: translateX(-100%); -moz-transform: translateX(-100%); -o-transform: translateX(-100%); -ms-transform: translateX(-100%); transform: translateX(-100%); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); opacity: 0; display: none\9; ;/*ie6,ie7,ie8*/}
+.showleft { -webkit-transform: translateX(0px); -moz-transform: translateX(0px); -o-transform: translateX(0px); -ms-transform: translateX(0px); transform: translateX(0px); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); opacity: 1; -webkit-transition-delay: .3s; -moz-transition-delay: .3s; -o-transition-delay: .3s; -ms-transition-delay: .3s; transition-delay: .3s; display: block\9; ;/*ie6,ie7,ie8*/}
+.hidescaleup { -webkit-transform: scale(1.1); -moz-transform: scale(1.1); -o-transform: scale(1.1); -ms-transform: scale(1.1); transform: scale(1.1); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); opacity: 0; }
+.showscaleup { -webkit-transform: scale(1); -moz-transform: scale(1); -o-transform: scale(1); -ms-transform: scale(1); transform: scale(1); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); opacity: 1; -webkit-transition-delay: .3s; -moz-transition-delay: .3s; -o-transition-delay: .3s; -ms-transition-delay: .3s; transition-delay: .3s; }
+.hideflip { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); display: none\9; ;/*ie6,ie7,ie8*/ opacity: 0; -webkit-transform: rotatey(-90deg) scale(1.1); -moz-transform: rotatey(-90deg) scale(1.1); -o-transform: rotatey(-90deg) scale(1.1); -ms-transform: rotatey(-90deg) scale(1.1); transform: rotatey(-90deg) scale(1.1); -webkit-transform-origin: 50% 50%; -moz-transform-origin: 50% 50%; -o-transform-origin: 50% 50%; -ms-transform-origin: 50% 50%; transform-origin: 50% 50%; }
+.showflip { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); display: block\9; ;/*ie6,ie7,ie8*/ opacity: 1; -webkit-transition-delay: .3s; -moz-transition-delay: .3s; -o-transition-delay: .3s; -ms-transition-delay: .3s; transition-delay: .3s; -webkit-transform: rotatey(0deg) scale(1); -moz-transform: rotatey(0deg) scale(1); -o-transform: rotatey(0deg) scale(1); -ms-transform: rotatey(0deg) scale(1); transform: rotatey(0deg) scale(1); -webkit-transform-origin: 50% 50%; -moz-transform-origin: 50% 50%; -o-transform-origin: 50% 50%; -ms-transform-origin: 50% 50%; transform-origin: 50% 50%; }
+
+
+/* 注册表单样式 */
+.nc-login-layout { width: 1000px; margin: 20px auto; position: relative; z-index: 1;}
+
+.nc-login { background-color: #FFF; width: 440px; padding: 19px 19px 29px 19px; border: solid 1px #E6E6E6; border-radius: 5px; float:right; position: relative; z-index: 1;}
+.nc-login .tabs-container { margin-top: 30px; padding: 0 40px 20px 40px;}
+.nc-login .tabs-content { width: 352px; }
+.nc-login .nc-login-form dl { width: 348px;}
+.nc-login .nc-login-form dl dd .text { width: 240px;}
+.nc-login .nc-login-form .submit-div .submit { width: 348px;}
+
+
+.nc-login-layout .left-pic { width: 450px; height: 350px; float:left; margin: 30px 0; position: relative; z-index:1;}
+.nc-login-layout .left-pic img { max-width: 450px; max-height: 350px; position: absolute; z-index:1; top:0; left:0 }
+.nc-login-layout .left-pic span { position:absolute; z-index: 2; top:220px; left:100px; line-height:32px; font-size: 24px; font-family:"microsoft yahei"; width: 250px; text-align: center; }
+.nc-login-layout .left-pic p a { color: #FFF; position:absolute; z-index: 2; top:270px; left: 165px; line-height:28px; font-size: 12px; width: 120px; text-align: center; }
+.nc-login-left { line-height: 22px; color: #626A73; display: inline; width: 450px; float: left; margin: 10px 0;}
+.nc-login-left h3 { font-size:18px; font-family: "microsoft yahei"; font-weight:700; color: #555; line-height: 30px; margin-top: 2px; margin-bottom: 6px;}
+.nc-login-left ol { width: 420px; margin-top: 20px;  border-bottom: dashed 1px #E7E7E7;}
+.nc-login-left ol li { font-family: "microsoft yahei"; font-size: 14px; line-height: 48px; display: block; vertical-align: middle; width: 200px; height: 48px; float: left; padding: 0 0 12px 0; margin: 0 0 5px 10px; overflow: hidden;}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+a:link, a:visited, a:active {
+    text-decoration: none;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+
+#footer {
+    font-size: 12px !important;
+    text-align: center;
+    margin: 20px auto 0 auto;
+    padding-bottom: 10px;
+    overflow: hidden;
+	border-top: solid 1px #F5F5F5;
+}
+#footer p {
+    color: #666;
+    word-spacing: 5px;
+    padding: 10px 0;
+}
+#footer a {
+    color: #666;
+    text-decoration: none;
+}
+

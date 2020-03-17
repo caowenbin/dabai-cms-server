@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">供应商管理</a></li>
+        <li class="active">创建供应商信息</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>                         {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="fullname">
+                                <span class="red">*</span>供应商全称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="fullname" class="col-xs-10 col-sm-5"
+                                       name="fullname"
+                                       value=""
+                                       data-easyform="length:2 50;"
+                                       placeholder="请输入由2-25位字母,数字,下划线或汉字组成的名称"
+                                       data-message="请输入由2-25位字母,数字,下划线或汉字组成的名称"
+                                       data-easytip="class:easy-blue;position:top;"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="short_name">
+                                <span class="red">*</span>供应商简称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="short_name" class="col-xs-10 col-sm-5"
+                                       name="short_name"
+                                       value=""
+                                       data-easyform="length:2 30;"
+                                       placeholder="请输入由2-25位字母,数字,下划线或汉字组成的简称"
+                                       data-message="请输入由2-20位字母,数字,下划线或汉字组成的简称"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="contact_name">
+                                <span class="red">*</span>联系人</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="contact_name" class="col-xs-10 col-sm-5"
+                                       name="contact_name"
+                                       value=""
+                                       data-easyform="length:2 15;"
+                                       placeholder="请输入由2-15位字母,数字,下划线或汉字组成的名称"
+                                       data-message="请输入由2-15位字母,数字,下划线或汉字组成的名称"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="contact_phone">
+                                <span class="red">*</span>联系方式 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="contact_phone"
+                                       placeholder="请输入手机号或固定座机(分机)"
+                                       data-message="请输入由7-19位中划线,数字组成的联系方式"
+                                       data-easytip="class:easy-blue;position:right;"
+                                       data-easyform="length:7 19;char-english;"
+                                       class="col-xs-10 col-sm-5" name="contact_phone"
+                                       value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="login_name">
+                                <span class="red">*</span>登陆账号 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="由5-20位英文、数字、下划线组成,必须字母开头"
+                                       id="login_name"
+                                       class="col-xs-10 col-sm-5" name="login_name"
+                                       value=""
+                                       data-easyform="regex:^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$;real-time;ajax:check_data('login_name');"
+                                       data-message="请输入由5-20位英文、数字、下划线组成,必须字母开头"
+                                       data-easytip="class:easy-blue;position:right;"
+                                       data-message-ajax="登陆账号已存在!"/>
+                                <span class="red">(*要保证唯一性)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="password">
+                                <span class="red">*</span>登陆密码 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="由6-10位英文、数字、下划线、英文标点符号组成"
+                                       id="password"
+                                       class="col-xs-10 col-sm-5" name="password"
+                                       value="000000" data-easyform="length:6 20;char-english;"
+                                       data-message="请输入由6-20位英文、数字、下划线、英文标点符号组成"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        function check_data($name) {
+            var check_obj = $("input[name='" + $name + "']");
+            var login_name = check_obj.val();
+            if (/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/.test(login_name)) {
+                $.ajax(
+                        {
+                            type: "post",
+                            url: "{{ url_for('.check_view') }}",
+                            data: {"login_name": login_name},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    check_obj.trigger("easyform-ajax", true);
+                                }
+                                else {
+                                    check_obj.trigger("easyform-ajax", false);
+                                }
+                            }
+                        })
+            }
+        }
+    </script>
+{% endblock %}

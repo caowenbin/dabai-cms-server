@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">属性管理</a></li>
+        <li class="active">新增属性</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="first_category">
+                                <span class="red">*</span>所属分类 </label>
+
+                            <div class="col-sm-9">
+                                <select class="chosen-select width-15" id="first_category"
+                                        data-placeholder=" " data-easyform="null;">
+                                </select>
+                                <select class="chosen-select width-15" id="second_category"
+                                        data-placeholder=" " data-easyform="null;">
+                                </select>
+                                <select class="chosen-select width-15" id="third_category"
+                                        name="category_id"
+                                        data-placeholder=" " data-easyform="number;"
+                                        data-message="请选择所属分类"
+                                        data-easytip="class:easy-blue;position:right;">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="name">
+                                <span class="red">*</span>属性名 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="name" name="name"
+                                       placeholder="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="length:1 15;char-chinese;"
+                                       data-message="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="ordering">
+                                <span class="red">*</span>位置 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input type="text" class="input-mini" id="ordering"
+                                           name="ordering" value="1"
+                                           placeholder="请输入1-255的数字, 越小越向前"
+                                           data-easyform="number;uint:1 255;"
+                                           data-message="请输入1-255的数字, 越小越向前"
+                                           data-easytip="class:easy-blue;position:right;"/>
+                                    <span class="red">(*越小越向前)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">
+                                <span class="red">*</span> 属性选项值 </label>
+
+                            <div class="col-sm-9">
+                                <div class="inline-field">
+                                    <div class="inline-field-list">
+
+                                    </div>
+                                    <div class="inline-field-template hide">
+                                        <div class="inline-field">
+                                            <div class="inline-field-control">
+                                                <a href="javascript:void(0)"
+                                                   class="inline-remove-field"><i
+                                                        class="icon-remove"></i></a>
+                                            </div>
+                                            <div class="inline-form-field">
+                                                <fieldset>
+                                                    <label>选项值</label>
+                                                    <input type="hidden" id="attribute_item_name"
+                                                           name="attribute_item_name"
+                                                           placeholder=" "
+                                                           data-easyform="length:1 15;char-chinese;"
+                                                           data-message="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                                                           data-easytip="class:easy-blue;position:right;">
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a id="attribute-item-button" href="javascript:void(0)"
+                                       class="btn" data-easytip="position:right;class:easy-blue;"
+                                       data-easytip-message="必须设置一个选项值">增加选项值</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/category.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/pages/attribute.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    <script type="text/javascript">
+    init_category();
+    </script>
+{% endblock %}
+

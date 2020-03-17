@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>登录 | 大白v1.0</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="大白">
+    <meta name="description" content="大白">
+    <meta name="author" content="大白">
+    <link href="{{ static_url('css/home_login.css') }}" rel="stylesheet" type="text/css"/>
+     <link rel="stylesheet" href="{{ static_url('jquery/easyform/easyform.css') }}">
+</head>
+<body>
+<div class="header-wrap">
+    <header class="public-head-layout wrapper">
+        <h1 class="site-logo">
+            <img src="{{ static_url('images/hk_logo_355.png') }}" class="pngFix">
+        </h1>
+        <div class="nc-regist-now">
+            <span>您好，欢迎来到大白v1.0服务之窗</span></div>
+    </header>
+</div>
+<!-- PublicHeadLayout End -->
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="nc-login-layout">
+    <div class="left-pic">
+        <img src="{{ static_url('images/home_instruct_m.jpg') }}" border="0" width="450px"
+             height="350px">
+    </div>
+    <div class="nc-login">
+        <div class="arrow"></div>
+        <div class="nc-login-mode">
+            <ul class="tabs-nav">
+                <li>
+                    <a href="#default"
+                       class="">运营登录<i></i></a></li>
+                <li>
+                    <a href="#supplier"
+                       class="">商家登录<i></i></a></li>
+                <span class="tabulousclear"></span>
+            </ul>
+
+            <div id="tabs_container" class="tabs-container transition">
+                <div id="default" class="tabs-content make_transist showflip">
+                    <form id="admin_form" class="nc-login-form" method="post" action="#">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <input type="hidden" name="user_model" value="admin">
+                        <dl>
+                            <dt>公司邮箱：</dt>
+                            <dd>
+                                <input type="email" class="text" autocomplete="off"
+                                       name="login_name"
+                                       placeholder="公司邮箱 " id="login_name"
+                                       value="" data-easyform="length:2 30;" data-message="请输入合格的登录名" data-easytip="class:easy-blue;position:top;">
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>登录密码：</dt>
+                            <dd>
+                                <input type="password" class="text" name="password"
+                                       autocomplete="off"
+                                       placeholder="6-20个大小写英文字母、符号或数字" id="password"
+                                       value="" data-easyform="length:6 20;" data-message="请输入合格的密码" data-easytip="class:easy-blue;position:top;">
+                            </dd>
+                        </dl>
+                        <div class="submit-div">
+                            <button class="btn btn-info submit" type="submit" id="admin_submit">
+                                登   录
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="supplier" class="tabs-content hideflip make_transist">
+                    <form id="supplier_form" method="post" class="nc-login-form" action="#">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <input type="hidden" name="user_model" value="supplier">
+                        <dl>
+                            <dt>商家账号：</dt>
+                            <dd>
+                                <input name="login_name" type="text" class="text" id="login_name"
+                                       placeholder="申请开通的账户号" autocomplete="off"
+                                       value="" data-easyform="length:2 30;" data-message="请输入合法的登录名" data-easytip="class:easy-blue;position:top;">
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt>登录密码：</dt>
+                            <dd>
+                                <input type="password" name="password" autocomplete="off"
+                                       class="text" placeholder="6-20个大小写英文字母、符号或数字"
+                                       id="password" size="15"
+                                       value="" value="" data-easyform="length:6 20;" data-message="请输入合格的密码" data-easytip="class:easy-blue;position:right;">
+
+                            </dd>
+                        </dl>
+                        <div class="submit-div">
+                            <button class="btn btn-info submit" type="submit" id="supplier_submit">
+                                登   录
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<script type="text/javascript" src="{{ static_url('jquery/jquery-2.0.3.min.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('bootstrap3/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('jquery/form/jquery.form.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('js/login-tab.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('jquery/layer/layer.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('jquery/easyform/easyform.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('js/login.js') }}"></script>
+<div id="footer" class="wrapper">
+    <p><a href="#">关于我们</a>
+        | <a href="#">合作及洽谈</a>
+        | <a href="#">联系我们</a>
+    </p>
+    航空互联
+</div>
+</body>
+</html>

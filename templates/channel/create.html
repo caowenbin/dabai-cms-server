@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">渠道管理</a></li>
+        <li class="active">新增渠道</li>
+{% endblock %}
+
+{% block page_content %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+
+                <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="name">
+                            <span class="red">*</span>渠道名称 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="name" name="name" value=""
+                                   placeholder="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="length:1 15;char-chinese;"
+                                       data-message="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                                       data-easytip="class:easy-blue;position:top;"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="channel_code">
+                            <span class="red">*</span>渠道编码 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="channel_code" name="channel_code"
+                                   class="col-xs-10 col-sm-5" value=""
+                                   placeholder="由6-10位英文、数字、下划线、英文标点符号组成"
+                                       data-easyform="length:3 15;char-english;"
+                                       data-message="请输入由3-15位英文、数字、下划线、英文标点符号组成"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="secret_key">
+                            <span class="red">*</span>通信密钥 </label>
+
+                        <div class="col-sm-9">
+                            <input type="text" id="secret_key" name="secret_key"
+                                   class="col-xs-10 col-sm-5" value=""
+                                   placeholder="由6-20位英文、数字、下划线、英文标点符号组成"
+                                       data-easyform="length:6 20;char-english;"
+                                       data-message="请输入由6-20位英文、数字、下划线、英文标点符号组成"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="remarks">
+                            备注 </label>
+
+                        <div class="col-sm-9">
+                            <textarea  id="remarks" class="col-xs-10 col-sm-5" name="remarks"
+                                       placeholder="最大长度28位"
+                                       data-easyform="null; length:0 28;"
+                                       data-message="最大长度28位"
+                                       data-easytip="class:easy-blue;position:right;"></textarea>
+                        </div>
+                    </div>
+
+	                <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

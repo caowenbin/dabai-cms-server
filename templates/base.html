@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% import 'layout.html' as layout with context %}
+{% import 'actions.html' as actionlib with context %}
+
+<html lang="en">
+<head>
+    <title>{% block title %}个人中心 | 大白v1.0{% endblock %}</title>
+    {% block head_meta %}
+        <meta charset="utf-8"/>
+        <meta name="keywords" content="大白,依米,航空互联"/>
+        <meta name="description" content="大白,依米,航空互联"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    {% endblock %}
+    {% block head_css %}
+        <link href="{{ static_url('bootstrap3/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ static_url('bootstrap3/css/font-awesome.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/dabai.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('jquery/easyform/easyform.css') }}">
+    {% endblock %}
+
+    {% block head %}{% endblock %}
+    {% block head_tail %}{% endblock %}
+</head>
+
+<body>
+{% block page_body %}
+    <div class="navbar navbar-default" id="navbar">
+
+        <div class="navbar-container" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="{{ url_for('home.home') }}" class="navbar-brand">
+                    <small>
+                        <i class="icon-leaf"></i>
+                        大白后台管理系统
+                    </small>
+                </a>
+            </div>
+
+            <div class="navbar-header pull-right" role="navigation">
+                {{ layout.navbar_header() }}
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-container">
+        <div class="main-container-inner">
+            {{ layout.menu() }}
+            <div class="main-content">
+                <div class="breadcrumbs" id="breadcrumbs">
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="icon-home home-icon"></i>
+                                <a href="{{ url_for('home.home') }}">首页</a>
+                            </li>
+                        {% block breadcrumb %} {% endblock %}
+                        </ul>
+
+                </div>
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {% block page_content %}
+                                <form class="form-horizontal" id="dabai-button-content-form">
+                                {% if csrf_token %}
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                {% endif %}
+                                    <input type="hidden" id="return_url" name="return_url"
+                                           value="{{ return_url|default('', True) }}">
+                                </form>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail_js %}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/jquery-2.0.3.min.js') }}"></script>
+    <script src="{{ static_url('bootstrap3/js/bootstrap.min.js') }}"></script>
+    <script src="{{ static_url('js/dabai.min.js') }}"></script>
+    <script src="{{ static_url('jquery/easyform/easyform.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('jquery/form/jquery.form.js') }}"></script>
+    <script src="{{ static_url('jquery/layer/layer.js') }}"></script>
+    <script src="{{ static_url('js/base.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        function verify_form_data() {
+            return true;
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

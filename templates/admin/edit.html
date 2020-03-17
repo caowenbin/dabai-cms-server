@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">管理员配置</a></li>
+    <li class="active">修改管理员信息</li>
+{% endblock %}
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <input type="hidden" id="id" name="id" value="{{ data.id }}">
+                        <input type="hidden" id="return_url" name="return_url"
+                               value="{{ return_url }}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">登录邮箱 </label>
+
+                            <div class="col-sm-9">
+                                <input type="email" id="login_email" name="login_email"
+                                       value="{{ data.email }}"
+                                       class="col-xs-10 col-sm-5" readonly data="filter_easyform"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">登录密码 </label>
+
+                            <div class="col-sm-9">
+                                <input type="password" id="password" name="password"
+                                       value="{{ data.password }}"
+                                       class="col-xs-10 col-sm-5" readonly data="filter_easyform"/>
+                                <input type="password" id="new_password" name="new_password"
+                                       placeholder="请输入由6-20位英文、数字、下划线、英文标点符号组成"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="null;length:6 20;char-english;"
+                                       data-message="请输入由6-20位英文、数字、下划线、英文标点符号组成"
+                                       data-easytip="class:easy-blue;position:right;"
+                                       style="display: none;"/>&nbsp;
+                                <button type="button" class="btn btn-minier btn-yellow"
+                                        id="reset_password">重置密码
+                                </button>
+                                <button type="button" class="btn btn-minier btn-yellow"
+                                        id="close_reset" style="display: none;">取消重置
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">真实姓名 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="fullname" name="fullname" placeholder="真实姓名"
+                                       value="{{ data.fullname }}" class="col-xs-10 col-sm-5"
+                                       data-easyform="regex:^[\w\u4e00-\u9fa5\s]{2,16}$;"
+                                       data-message="请输入2-10位由中文、英文、数字、下划线组成的真实姓名"
+                                       data-easytip="class:easy-blue;position:bottom;left:120;"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">是否管理员 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="is_admin" id="is_admin"
+                                           {% if data.administer == 1 %}checked {% endif %}
+                                           class="ace ace-switch ace-switch-7" type="checkbox"
+                                           data-easyform="null;"/>
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('#reset_password').on('click', function () {
+                $("#password").hide();
+                $("#reset_password").hide();
+                $("#new_password").show();
+                $("#close_reset").show();
+            });
+            $('#close_reset').on('click', function () {
+                $("#new_password").hide();
+                $("#close_reset").hide();
+                $("#password").show();
+                $("#reset_password").show();
+            });
+        });
+    </script>
+{% endblock %}

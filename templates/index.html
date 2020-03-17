@@ -1,0 +1,22 @@
+﻿{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li class="active">个人中心</li>
+{% endblock %}
+
+{% block page_content %}
+    {{ super() }}
+            <div class="alert alert-block alert-success">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="icon-remove"></i>
+                </button>
+                <i class="icon-ok green"></i>
+                欢迎使用
+                <strong class="green">
+                    大白后台管理系统
+                    <small>(v1.0)</small>
+                </strong>
+                ,为你而生,发力电商格局.
+            </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block head_css %}
+    {{ super() }}
+    <link href="{{ static_url('jquery/ztree/zTreeStyle.css') }}" rel="stylesheet">
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li class="active">配送城市管理</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" name="pop" role="form" method="post" action="{{ url_for('.create_view') }}">
+                    {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                    <input type="hidden" name="cities" value="">
+                    <ul id="china_cities" class="ztree"></ul>
+                    <div class="clearfix margin-top-20">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info" type="button" id="form_submit">
+                                <i class="icon-ok bigger-110"></i>
+                                提交
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/ztree/jquery.ztree.core.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/ztree/jquery.ztree.excheck.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('data/china_city.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        var setting = {
+            view: {
+                showIcon: false
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onCheck: onCheck
+            }
+        };
+        var zNodes = ChinaCities;
+        var select_city = {{ data|tojson|safe }};
+        for (var z in zNodes) {
+            var $o = zNodes[z];
+            if (select_city.indexOf($o.id) != -1) {
+                $o["checked"] = "true";
+            }
+        }
+        $(document).ready(function () {
+            $.fn.zTree.init($("#china_cities"), setting, ChinaCities);
+        });
+        function onCheck(e, treeId, treeNode) {
+            var treeObj = $.fn.zTree.getZTreeObj("china_cities"),
+                    nodes = treeObj.getCheckedNodes(true);
+            var $datas = "";
+            for (var i = 0; i < nodes.length; i++) {
+                var $o = nodes[i];
+                if ($o.data != undefined) {
+                    $datas += $o.data + ";";
+                }
+            }
+            $('input[name="cities"]').attr('value', $datas);
+        }
+    </script>
+{% endblock %}
+

@@ -1,0 +1,115 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+     <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>发布商品</li>
+        <li class="active">第4步:图文说明</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.step_content(4, data.id, query_kwargs.is_edit, query_kwargs.category_id) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <input type="hidden" name="category_id"
+                               value="{{ query_kwargs.category_id }}">
+                        <input type="hidden" name="is_edit" value="{{ query_kwargs.is_edit }}">
+                        <input type="hidden" name="id" value="{{ data.id }}">
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <ul class="nav nav-tabs" id="templateTab">
+                                    <li >
+                                        <a href="#temp-title" data-type="title">标题</a>
+                                    </li>
+                                    <li class="active"><a href="#temp-imgtext" data-type="imgtext">图文</a></li>
+                                </ul>
+
+                                <div class="template-content">
+                                    <div id="template-loading" class="hide">
+                                        <img src="{{ static_url('images/loading.gif') }}"> 加载中...
+                                    </div>
+                                    <div class="tab-pane" id="temp-title"></div>
+                                    <div class="tab-pane active" id="temp-imgtext"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8" id="wxcontent" style="position: relative;">
+                                <ul class="nav nav-tabs" id="templateContent" style="width:85%;"
+                                    data-easytip="position:bottom;class:easy-blue;"
+                                     data-easytip-message="至少输入手机端或平板端的图文说明">
+                                    <li class="active"><a data-type="phone">手机端</a>
+                                    </li>
+                                    <li><a data-type="pad">平板端</a></li>
+                                </ul>
+                                <!--手机富文本编辑器-->
+                                <div style="position:relative;width:85%;" id="content-phone">
+                                    <script id="wwei_editor" type="text/plain"
+                                            style="height:500px;">
+                                            {{ data.image_text|safe }}
+                                    </script>
+                                    <!-- 样式工具条 -->
+                                </div>
+                                <!-- 平板的编译器-->
+                                <div style="position:relative;width:85%;" id="content-pad">
+                                    <script id="wwei_editor_pad" type="text/plain"
+                                            style="height:500px;">
+                                            {{ data.image_text_pad|safe|default("", True) }}
+                                    </script>
+                                    <!-- 样式工具条 -->
+                                </div>
+                                <!-- 预览、复制、清空按钮 -->
+                                <div id="btn_box" class="box_btn">
+
+                                    <button type="button" class="btn  btn-xs" id="clear-editor">清&nbsp;空</button>
+                                    <button type="button" class="btn  btn-xs" id="phone">预&nbsp;&nbsp;览</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-ok bigger-110"></i>
+                                    提交完成发布
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预览 -->
+    <div id="previewbox">
+        <div style="height:100%;overflow-y:scroll;padding-right:5px;">
+            <div id="preview"></div>
+        </div>
+
+        <div style="position:absolute;right:0px;top:30px;cursor:pointer;width:50px;height:50px;font-size:30px;font-weight:700;color:#428dca"
+             id="phoneclose">X
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('webeditor/ueditor/ueditor.config.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('webeditor/ueditor/ueditor.all.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('js/pages/product_about.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+{% endblock %}
+

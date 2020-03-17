@@ -1,0 +1,189 @@
+{% import 'group/step.html' as steplib with context %}
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">频道管理</a></li>
+        <li>添加频道</li>
+        <li class="active">第1步:基本信息及选择模板</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.step_content(1) }}
+
+                    <form class="form-horizontal" name="pop" role="form">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="group_code">
+                                <span class="red">*</span>频道编码 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="group_code" name="group_code"
+                                       placeholder="请输入2-18位字母开头,由英文、数字、下划线组成的编码"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="regex:^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){1,17}$;real-time;ajax:check_data('group_code');"
+                                       data-message="请输入2-18位字母开头,由英文、数字、下划线组成的编码"
+                                       data-easytip="class:easy-blue;position:top;"
+                                       data-message-ajax="频道编码已存在!"/>
+                                <span class="red">(*要保证唯一性)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="name">
+                                <span class="red">*</span>频道名称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="name" name="name"
+                                       placeholder="请输入由1-18位由中文、英文、数字、下划线组成的名字"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="length:1 18;char-chinese;"
+                                       data-message="请输入由1-18位由中文、英文、数字、下划线组成的名字"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="channel_code">
+                                <span class="red">*</span>渠道 </label>
+
+                            <div class="col-sm-9">
+                                <select multiple="" name="channel_code" id="channel_code"
+                                        class="col-xs-10 col-sm-5 chosen-select tag-input-style"
+                                         data-placeholder=" "
+                                        data-easyform="regex:\S;"
+                                        data-message="请选择对应的渠道"
+                                        data-easytip="class:easy-blue;position:top;">
+                                    {% for c in data %}
+                                        <option value='{{ c.channel_code }}'>{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="is_home">
+                                是否作为首页 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="is_home" id="is_home" type="radio" class="ace"
+                                           value="0" checked>
+                                    <span class="lbl">&nbsp;否</span>
+                                </label>
+                                <label class="margin-left-10">
+                                    <input name="is_home" id="is_home" type="radio" class="ace"
+                                           value="1">
+                                    <span class="lbl">&nbsp;是</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="ordering">
+                                <span class="red">*</span>位置 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input type="text" class="input-mini" id="ordering"
+                                           name="ordering" value="1" placeholder="请输入1-255的数字, 越小越向前"
+                                           data-easyform="number;uint:1 255;"
+                                           data-message="请输入1-255的数字, 越小越向前"
+                                           data-easytip="class:easy-blue;position:right;"/>
+                                    <span class="red">(*越小越向前)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="validity">
+                                状态 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="validity" id="validity" type="radio" class="ace"
+                                           value="1" checked>
+                                    <span class="lbl">&nbsp;显示</span>
+                                </label>
+                                <label>
+                                    <input name="validity" id="validity" type="radio" class="ace"
+                                           value="0">
+                                    <span class="lbl">&nbsp;隐藏</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">
+                                <span class="red">*</span> 栏目选项 </label>
+                            <div class="col-sm-9">
+                                <div class="group-templates"></div>
+                                <div class="col-sm-12">
+                                    <a href="javascript:show_group_templates('{{ url_for('.group_template_view') }}')"
+                                       class="btn" id="select-group-templates" data-easytip="position:right;class:easy-blue;"
+                                       data-easytip-message="必须设置一个栏目选项"> <i class=" icon-plus bigger-130"></i>选择模板</a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-long-arrow-right bigger-110"></i>
+                                    下一步,继续
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/pages/group.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        function check_data($name) {
+            var check_obj = $("input[name='" + $name + "']");
+            var group_code = check_obj.val();
+            if (/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){1,17}$/.test(group_code)) {
+                $.ajax(
+                        {
+                            type: "post",
+                            url: "{{ url_for('.check_view') }}",
+                            data: {"group_code": group_code},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    check_obj.trigger("easyform-ajax", true);
+                                }
+                                else {
+                                    check_obj.trigger("easyform-ajax", false);
+                                }
+                            }
+                        })
+            }
+        }
+    </script>
+{% endblock %}

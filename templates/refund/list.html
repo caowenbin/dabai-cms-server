@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.css') }}">
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li class="active">退款列表</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {% set _user_model = handler.session["user"]["user_model"] %}
+                    <div class="alert alert-block">
+                        <form class="form-inline all_query_kwargs">
+                            <label class="inline">
+                                <span class="lbl">订单号</span>
+                                <input type="text" name="order_no"
+                                       value="{{ query_kwargs.order_no|default("", True) }}"/>
+                            </label>
+                            <label class="inline margin-left-10">
+                                <span class="lbl">退款单号</span>
+                                <input type="text" name="refund_no"
+                                       value="{{ query_kwargs.refund_no|default("", True) }}"/>
+                            </label>
+                            <label class="inline margin-left-10">
+                                <span class="lbl">申请时间</span>
+                                <input type="text" class="query_time"
+                                       value="{{ query_kwargs.start_time|default("", True) }}"
+                                       id="some_class_1" name="start_time"/>
+                                <input type="text" class="query_time"
+                                       value="{{ query_kwargs.end_time|default("", True) }}"
+                                       id="some_class_2" name="end_time"/>
+                            </label>
+                            {% if _user_model == "admin" %}
+                                <label class="inline  margin-left-10">
+                                    <span class="lbl">供应商</span>
+                                    <select class="chosen-select col-xs-10 col-sm-4 width-15"
+                                            id="supplier_id"
+                                            name="supplier_id"
+                                            data-placeholder=" ">
+                                        <option value="">&nbsp;</option>
+                                        {% for v in suppliers %}
+                                            <option value="{{ v.id }}"
+                                                    {% if query_kwargs.supplier_id == v.id|string %}selected{% endif %}>{{ v.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+
+                                <label class="inline  margin-left-10">
+                                    <span class="lbl">状态</span>
+                                    <select class="chosen-select col-xs-10 col-sm-4 width-15"
+                                            id="refund_status"
+                                            name="refund_status"
+                                            data-placeholder=" ">
+                                        <option value="">&nbsp;</option>
+                                        {% for item in "refundstatus"|constant_list %}
+                                            <option value="{{ item.value }}"
+                                                    {% if query_kwargs.refund_status == item.value %}selected{% endif %}>{{ _(item.name) }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            {% endif %}
+                            <button type="submit" class="btn btn-info btn-sm margin-left-10">
+                                查询
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-xs-12">
+                        {% set query_type =  query_kwargs.query_type %}
+                        <div class="tabbable">
+                            <ul class="inbox-tabs nav nav-tabs padding-16 tab-size-bigger tab-space-1">
+                            {% for tab in tabs_list %}
+                                {% set is_active = query_kwargs.query_type == tab.query_type %}
+                                <li {% if is_active %}class="active"{% endif %}>
+                                    <a href="{{ url_for('.list_view', query_type=tab.query_type) }}">
+                                        <span class="bigger-110">{{ tab.name }}</span>
+                                        <span class="badge badge-pink">
+                                            {% if is_active %}
+                                                {{ count }}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+
+                            <div class="table-responsive margin-top-20">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        {% for column in column_list %}
+                                            <th class="{{ column_widget_args.get(column).class }}">{{ column_labels.get(column, column) }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for item in data %}
+                                        <tr>
+                                            <td width="50px" class="padding-lr-5">
+                                                <div class="action-buttons">
+                                                    <a class="blue" data-toggle="tooltip"
+                                                       data-placement="top" title="查看详情"
+                                                       href="{{ url_for('.detail_view') }}?id={{ item.id }}&return_url={{ return_url }}">
+                                                        <i class="icon-zoom-in bigger-130"></i>
+                                                    </a>
+                                                    {% if _user_model == "admin" %}
+
+                                                        {% if item.refund_status == 9 %}
+                                                            <a class="red" data-toggle="tooltip"
+                                                               data-placement="top" title="同意退款"
+                                                               href="javascript:operation('{{ url_for('refund_agree') }}', '{{ item.id }}-10', '确认同意该退款申请?');">
+                                                                <i class="icon-money bigger-130"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if item.refund_status < 10 %}
+                                                            <a class="red" data-toggle="tooltip"
+                                                               data-placement="top" title="取消关闭退款申请"
+                                                               href="javascript:operation('{{ url_for('refund_close') }}', {{ item.id }}, '确认取消关闭该退款申请?');">
+                                                                <i class="icon-remove-circle bigger-130"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if item.refund_status == 0 %}
+                                                            <a class="red" data-toggle="tooltip"
+                                                               data-placement="top" title="驳回退款申请"
+                                                               href="javascript:operation('{{ url_for('refund_agree') }}', '{{ item.id }}-1', '确认驳回该退款申请?');">
+                                                                <i class="icon-mail-reply-all bigger-130"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if item.refund_status == 1 %}
+                                                            <a class="red" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="追加补充退款申请信息"
+                                                               href="{{ url_for('refund_add_info') }}?id={{ item.id }}">
+                                                                <i class="icon-edit bigger-130"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if item.refund_status == 4 %}
+                                                            <a class="green"
+                                                               onclick="_open_layer_info('{{ url_for('refund_express') }}?refund_no={{ item.refund_no }}&return_url={{ return_url }}', '填写退货快递信息', '780px', '500px')"
+                                                               href="#" data-toggle="tooltip"
+                                                               data-placement="top" title="填写退货快递信息">
+                                                                <i class="icon-plane bigger-130"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if item.refund_status == 5 %}
+                                                        <a class="green"
+                                                               onclick="_open_layer_info('{{ url_for('refund_express_sign') }}?id={{ item.id }}&return_url={{ return_url }}', '签收退货与发票', '780px', '500px')"
+                                                               href="#" data-toggle="tooltip"
+                                                               data-placement="top" title="签收退货与发票">
+                                                                <i class="icon-check bigger-130"></i>
+                                                            </a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            {% for c in column_list %}
+                                                <td class="{{ column_widget_args.get(c).class }}">
+                                                    {% if c == "refund_status" %}
+                                                        {{ _(item.refund_status|constants(name="refundstatus", is_name=True)) }}
+                                                    {% elif c == "refund_fee" %}
+                                                        {{ "%.2f"|format(item[c]|default(0, True)|float/100) }}
+                                                    {% elif c == "refund_reason_code" %}
+                                                        {{ _(item.refund_reason_code|int|constants(name="refundreason", is_name=True)) }}
+                                                    {% else %}
+                                                        {{ item[c]|default("", True) }}
+                                                    {% endif %}
+                                                </td>
+
+                                            {% endfor %}
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="999">
+                                                <div class="text-center">
+                                                    表无记录!
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="page-no-content">
+                                {{ layout.pager(page, num_pages, pager_url) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ super() }}
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.full.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('.query_time').datetimepicker({yearStart:2016 });
+            $(".chosen-select").chosen();
+        });
+
+    </script>
+{% endblock %}

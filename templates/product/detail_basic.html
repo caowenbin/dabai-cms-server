@@ -1,0 +1,181 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+{% block breadcrumb %}
+    {{ super() }}
+    <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>商品详情</li>
+        <li class="active">第1步:基本信息</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.detail_step_content(1, product_id, return_url_str) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品分类 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.category_name }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品类型 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {% if data.product_type == 0 %}实物商品{% else %}虚拟商品{% endif %}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品编码 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.spu }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品原称 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.full_name }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品全称 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.title }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品简称 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.short_name }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品品牌 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.brand_name }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>供应商 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.supplier_name }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                销量营销 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.sales_volume }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                每单限购 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.limits }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                营销语 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.market_text|default("-- 暂无数据 --", True) }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                推荐描述 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    {{ data.about_text|default("-- 暂无数据 --", True) }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                取货方式 </label>
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 control-label-left">
+                                    快递
+                                </label>
+                            </div>
+                        </div>
+
+                       <div class="clearfix">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn btn-info" href="{{ return_url }}">
+                                <i class="icon-mail-reply-all bigger-110"></i>
+                                返回
+                            </a>
+                        </div>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

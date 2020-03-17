@@ -1,0 +1,58 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+{% block head_css %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url('webuploader/webuploader.css') }}">
+    {{ super() }}
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+     <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>商品详情</li>
+        <li class="active">第3步:图片列表</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                     {{ steplib.detail_step_content(3, product_id, return_url_str) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        <div class="form-group">
+
+                            <div class="col-sm-10">
+                                <div id="uploader" class="wu-example">
+                                    <div class="queueList filled">
+                                        <ul class="filelist">
+                                            {% for p in data %}
+                                            <li name="WU_FILE_{{ loop.index0 }}" class="state-complete">
+                                                <p class="title {% if p.label == 0 %}li-feng{% endif %}"></p>
+                                                <p class="imgWrap">
+                                                    <img src="{{ p.image }}"/>
+                                                <p class="progress">
+                                                <span style="display: none; width: 0px;"></span>
+                                                </p>
+                                                <span class="success"></span></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix margin-top-20">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a class="btn btn-info" href="{{ return_url }}">
+                                <i class="icon-mail-reply-all bigger-110"></i>
+                                返回
+                            </a>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

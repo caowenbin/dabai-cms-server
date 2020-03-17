@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    {% block head_css %}
+        <link href="{{ static_url('bootstrap3/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ static_url('bootstrap3/css/font-awesome.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/dabai.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('jquery/easyform/easyform.css') }}">
+    {% endblock %}
+</head>
+
+<body>
+{% block page_body %}
+    <div class="page-content" style="min-height: 100%;">
+        <div class="row" style="margin: 0;padding-top: 20px;">
+            <div class="col-xs-12">
+                <form class="form-horizontal" name="pop" role="form" method="post">
+                    {% if csrf_token %}
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    {% endif %}
+                    {% block page_content %} {% endblock %}
+                    <div class="clearfix">
+                        <div class="col-md-offset-3 col-md-9 text-center">
+                            <button class="btn btn-info" type="submit" id="form_submit">
+                                <i class="icon-ok bigger-110"></i>
+                                提交
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block tail_js %}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/jquery-2.0.3.min.js') }}"></script>
+    <script type="text/javascript"  src="{{ static_url('bootstrap3/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/dabai.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('jquery/easyform/easyform.js') }}"></script>
+    <script src="{{ static_url('jquery/layer/layer.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/form/jquery.form.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13) {
+                    return false;
+
+                }
+            }
+            var v = $("form[name='pop']").easyform();
+            v.is_submit = false;
+            $("#form_submit").on("click", function () {
+                var tip_index;
+                $(this).attr("disabled", true);
+                $("form[name='pop']").ajaxSubmit({
+                    type: "post",
+                    dataType: "json",
+                    beforeSerialize: function () {
+                    },
+                    beforeSubmit: function () {
+                        if (v.is_submit == false) {
+                            $("#form_submit").attr("disabled", false);
+                            return v.is_submit
+                        }
+                        tip_index = parent.open_handle_tip();
+                    },
+                    success: function (result) {
+                        var code = result.code;
+                        parent.close_handle_tip(tip_index);
+                        if (code == 0) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            if(result.data != ""){
+                                 parent.set_redirect_href(result.data);
+                            }
+                            parent.layer.close(index);
+                        }
+                        else {
+                            console.log(result.msg);
+                            $("#form_submit").attr("disabled", false);
+                            parent.open_error_tip(result.msg);
+                            return false;
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        if (e.status == 400) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.set_redirect_href("/login.html");
+                            parent.layer.close(index);
+                        }
+                        $("#form_submit").attr("disabled", false);
+                        parent.open_error_tip("系统繁忙,请稍后……");
+                        return false;
+                    }
+                });
+            });
+
+        });
+
+    </script>
+{% endblock %}
+</body>
+</html>

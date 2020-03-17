@@ -1,0 +1,51 @@
+{% macro step_content(step_no, id=0) -%}
+    <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+        <div class="step-content">
+            <ul class="wizard-steps">
+                <li data-target="#step1" {% if step_no >= 1 %}class="active"{% endif %}>
+                    <span class="step">1</span>
+                    <span class="title">
+                        {% if id != 0 %}
+                        <a href="{{ url_for('.edit_view') }}?id={{ id }}">基本信息及选择模板</a>
+                        {% else %}
+                        基本信息及选择模板
+                        {% endif %}
+                    </span>
+                </li>
+                <li data-target="#step2" {% if step_no == 2 %}class="active"{% endif %}>
+                    <span class="step">2</span>
+                    <span class="title">
+                        {% if id != 0 %}
+                        <a href="{{ url_for('.template_bind_content_view') }}?id={{ id }}">模板更新内容</a>
+                        {% else %}
+                        模板更新内容
+                        {% endif %}
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro detail_step_content(step_no, id, return_url) -%}
+    <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+        <div class="step-content">
+            <ul class="wizard-steps">
+                <li data-target="#step1" {% if step_no >= 1 %}class="active"{% endif %}>
+                    <span class="step">1</span>
+                    <span class="title">
+                        <a href="{{ url_for('.detail_view') }}?id={{ id }}&return_url={{ return_url }}">基本信息及模板</a>
+                    </span>
+                </li>
+                <li data-target="#step2" {% if step_no == 2 %}class="active"{% endif %}>
+                    <span class="step">2</span>
+                    <span class="title">
+                        <a href="{{ url_for('.detail_view') }}?id={{ id }}&v=2&return_url={{ return_url }}">模板内容</a>
+                    </span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+{%- endmacro %}

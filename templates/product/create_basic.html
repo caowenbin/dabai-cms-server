@@ -1,0 +1,282 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+        <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>发布商品</li>
+        <li class="active">第1步:填写基本信息</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.step_content(1, 0, 0, 0) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>                         {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品分类 </label>
+
+                            <div class="col-sm-9">
+                                <select class="chosen-select width-15" id="first_category"
+                                        name="first_category"
+                                        data-placeholder=" " data-easyform="null;">
+                                </select>
+                                <select class="chosen-select width-15" id="second_category"
+                                        name="second_category"
+                                        data-placeholder=" " data-easyform="null;">
+                                </select>
+                                <select class="chosen-select width-15" id="third_category"
+                                        name="third_category"
+                                        data-placeholder=" " data-easyform="number;"
+                                        data-message="请选择所属分类"
+                                        data-easytip="class:easy-blue;position:right;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品类型 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="product_type" id="product_type" type="radio"
+                                           class="ace" value="0" checked>
+                                    <span class="lbl">&nbsp;实物商品</span>
+                                </label>
+                                <label style="margin-left: 30px">
+                                    <input name="product_type" id="product_type" type="radio"
+                                           value="1" class="ace">
+                                    <span class="lbl">&nbsp;虚拟商品
+                                   </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品编码 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="spu" name="spu"
+                                       placeholder="请输入4-18位数字组成的货码"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="regex:^\d{4,18}$;real-time;ajax:check_data('spu');"
+                                       data-message="请输入4-18位数字组成的货码"
+                                       data-easytip="class:easy-blue;position:right;" data-message-ajax="货码已存在!"/>
+                                <span class="red">(*要保证唯一性)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品原称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="full_name" name="full_name"
+                                       placeholder="请输入由1-99位由中文、英文、数字、下划线组成的原称"
+                                       class="col-xs-10 col-sm-5"
+                                       data-easyform="length:1 99;char-chinese;"
+                                       data-message="请输入由1-99位由中文、英文、数字、下划线组成的原称"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                                <span class="red">(*供应商提供的货品名称)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品标题 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="title" name="title"
+                                       placeholder="请输入由1-49位由中文、英文、数字、下划线组成的标题"
+                                       class="col-xs-10 col-sm-5" data-easyform="length:1 49;char-chinese;"
+                                       data-message="请输入由1-49位由中文、英文、数字、下划线组成的标题"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品简称 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="short_name" name="short_name"
+                                       placeholder="请输入由1-19位由中文、英文、数字、下划线组成的简称"
+                                       class="col-xs-10 col-sm-5" data-easyform="length:1 19;char-chinese;"
+                                       data-message="请输入由1-19位由中文、英文、数字、下划线组成的简称"
+                                       data-easytip="class:easy-blue;position:right;"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>货品品牌 </label>
+
+                            <div class="col-sm-9">
+                                <select class="chosen-select width-40" id="brand_name"
+                                        name="brand_name" data-placeholder=""
+                                        data-easyform="length:1 40;"
+                                        data-message="请选择货品品牌"
+                                        data-easytip="class:easy-blue;position:right;">
+                                    <option value=''>&nbsp;</option>
+                                    {% for b in data.brands %}
+                                        <option value='{{ b.name }}'>{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                <span class="red">*</span>供应商 </label>
+
+                            <div class="col-sm-9">
+                                <select class="chosen-select width-40" id="supplier_id"
+                                        name="supplier_id"
+                                        data-placeholder="" data-easyform="length:1 40;"
+                                        data-message="请选择供应商"
+                                        data-easytip="class:easy-blue;position:right;">
+                                    <option value=''>&nbsp;</option>
+                                    {% for s in data.suppliers %}
+                                        <option value='{{ s.id }}'>{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                销量营销 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="sales_volume" name="sales_volume" value="0"
+                                       placeholder="默认为0" data-easyform="number;"
+                                        data-message="销量营销必须为数字"
+                                        data-easytip="class:easy-blue;position:right;"
+                                       class="col-xs-10 col-sm-5"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                每单限购 </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" id="limits" name="limits" value="0"
+                                       placeholder="默认为0"
+                                       class="col-xs-10 col-sm-5" data-easyform="number;"
+                                        data-message="每单限购量必须为数字"
+                                        data-easytip="class:easy-blue;position:right;"/>
+                                <span class="red">(*为0时代表不限购)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                营销语 </label>
+
+                            <div class="col-sm-9">
+                                <textarea id="market_text" name="market_text"
+                                          class="col-xs-10 col-sm-5" rows="3"
+                                          placeholder="最大长度99位"
+                                       data-easyform="null; length:0 99;"
+                                       data-message="最大长度99位"
+                                       data-easytip="class:easy-blue;position:right;"></textarea>
+                                <span class="red">(*在商品详情页展示)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                推荐描述 </label>
+
+                            <div class="col-sm-9">
+                                <textarea id="about_text" name="about_text"
+                                          class="col-xs-10 col-sm-5" rows="6"
+                                          placeholder="最大长度99位" data-easyform="null; length:0 99;"
+                                       data-message="最大长度99位"
+                                       data-easytip="class:easy-blue;position:right;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                取货方式 </label>
+
+                            <div class="col-sm-9">
+                                <label>
+                                    <input name="out_way" id="out_way" type="radio" class="ace"
+                                           value="0" checked>
+                                    <span class="lbl">&nbsp;快递</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-long-arrow-right bigger-110"></i>
+                                    下一步,继续
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/category.js') }}"></script>
+{% endblock %}
+{% block tail %}
+    {{ super() }}
+    <script type="text/javascript">
+        init_category();
+        function check_data($name) {
+            var check_obj = $("input[name='" + $name + "']");
+            var spu = check_obj.val();
+            if (/^[1-9]\d{1,15}$/.test(spu)) {
+                $.ajax(
+                        {
+                            type: "post",
+                            url: "{{ url_for('.check_view') }}",
+                            data: {"spu": spu},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.code == 0) {
+                                    check_obj.trigger("easyform-ajax", true);
+                                }
+                                else {
+                                    check_obj.trigger("easyform-ajax", false);
+                                }
+                            }
+                        })
+            }
+        }
+    </script>
+{% endblock %}
+

@@ -1,0 +1,129 @@
+{% extends 'layer_base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.css') }}">
+{% endblock %}
+{% block page_content %}
+    {{ super() }}
+    {% set banner_list = data.banner_list %}
+    {% set template_content_detail = data.template_content_detail %}
+    <input type="hidden" name="group_template_id" value="{{ data.group_template_id }}">
+    <input type="hidden" name="group_id" value="{{ data.group_id }}">
+    <input type="hidden" name="id" value="{{ template_content_detail.id|default("0", True) }}">
+    <input type="hidden" name="content_type" value="1">
+    <input type="hidden" name="ordering" value="{{ data.ordering|default("0", True) }}">
+    <input type="hidden" name="custom_image_size" value="{{ data.img_size }}">
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="time">
+            <span class="red">*</span>发布时间
+        </label>
+
+        <div class="col-sm-9">
+            <label class="margin-right-20">
+                <input name="time" id="time" type="radio" class="ace"
+                       value="1" {% if not template_content_detail.start_time %} checked{% endif %}>
+                <span class="lbl">&nbsp;立即发布</span>
+            </label>
+            <label>
+                {% set is_job = template_content_detail.start_time %}
+                <input name="time" id="time" type="radio" class="ace"
+                       value="0" {% if is_job %} checked{% endif %}>
+                <span class="lbl">&nbsp;定时发布</span>
+                <input type="text" class="some_class" placeholder="开始时间" {% if is_job %}
+                       style="display: inline-block"{% endif %}
+                       value="{{ template_content_detail.start_time|default("", True) }}"
+                       name="start_time"
+                       data-easyform="length:10 20; datetime;"
+                       data-message="请选择开始时间"
+                       data-easytip="class:easy-blue;position:top;"/>
+                <input type="text" class="some_class" placeholder="结束时间" {% if is_job %}
+                       style="display: inline-block"{% endif %}
+                       value="{{ template_content_detail.end_time|default("", True) }}"
+                       name="end_time" data-easyform="length:10 20; datetime;"
+                       data-message="请选择结束时间"
+                       data-easytip="class:easy-blue;position:top;"/>
+            </label>
+        </div>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="content_code">
+            <span class="red">*</span>轮播图
+        </label>
+
+        <div class="col-sm-9">
+            <select class="chosen-select col-xs-10 col-sm-9" id="content_code"
+                    name="content_code"
+                    data-placeholder=" ">
+                <option value=""></option>
+                {% for v in banner_list %}
+                    <option value="{{ v.id }}"
+                            {% if template_content_detail.content_code == v.id|string %}selected{% endif %}>{{ v.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="view_banner">
+            缩略图预览 </label>
+
+        <div class="col-sm-9">
+            <input type="hidden" name="custom_image" value="">
+            {% for v in banner_list %}
+                <div id="b-{{ v.id }}" data="{{ v.image }}"
+                     style="display:none;"></div>
+            {% endfor %}
+            <img id="b-img" src="{{ static_url('images/progress.png') }}"
+                 style="border: 1px solid #FF9900; width: 230px; height: 90px;">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/datetimerpacker/jquery.datetimepicker.full.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        function init() {
+            var v = $('#content_code option:selected').val();
+            if (v != "" && v != undefined) {
+                var img_tmp = $("div#b-" + v).attr("data");
+                $("img#b-img").attr("src", img_tmp);
+                $("input[name='custom_image']").attr("value", img_tmp);
+            }
+        }
+        jQuery(function ($) {
+            $(".chosen-select").chosen();
+            $('.some_class').datetimepicker();
+            init();
+            $("select[name='content_code']").on("change", function () {
+                var v = $(this).val();
+                var img_tmp = $("div#b-" + v).attr("data");
+                $("img#b-img").attr("src", img_tmp);
+                $("input[name='custom_image']").attr("value", img_tmp);
+            })
+            $("input[name='time']").on("change", function () {
+                var v = $(this).val();
+
+                if (v == 0) {
+                    $(".some_class").show();
+                }
+                else {
+                    $(".some_class").hide();
+                }
+            });
+        })
+    </script>
+    {{ super() }}
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+        <li class="active">分类管理</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="alert alert-block">
+                        <form class="form-inline all_query_kwargs">
+                            <label class="inline">
+                                <span class="lbl">一级分类名称</span>
+                                <input type="text" id="name" name="name"
+                                       value="{{ query_kwargs.name|default("", True) }}"
+                                       placeholder=""/>
+                            </label>
+                            <button type="submit" class="btn btn-info btn-sm margin-left-10">
+                                查询
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-xs-12">
+                        <div class="tabbable">
+                            <ul id="inbox-tabs"
+                                class="inbox-tabs nav nav-tabs padding-16 tab-size-bigger tab-space-1">
+                                <li class="li-new-mail pull-right">
+                                    <a onclick="_open_layer_info('{{ url_for('.create_view') }}?parent_id=0', '新增一级分类')" class="btn-new-mail">
+                                    <span class="btn bt1n-small btn-purple no-border">
+                                        <i class=" icon-plus bigger-130"></i>
+                                        <span class="bigger-110">增加一级分类</span>
+                                    </span>
+                                    </a>
+                                </li>
+                            {% for tab in tabs_list %}
+                                {% set is_active = query_kwargs.query_type == tab.query_type %}
+                                <li {% if is_active %}class="active"{% endif %}>
+                                    <a href="{{ url_for('.list_view', query_type=tab.query_type) }}">
+                                        <span class="bigger-110">{{ tab.name }}</span>
+                                        <span class="badge badge-pink">
+                                            {% if is_active %}
+                                                {{ count }}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+
+                            <div class="table-responsive margin-top-20">
+                                <table id="sample-table-1"
+                                       class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <label>
+                                                <input type="checkbox" class="ace"/>
+                                                <span class="lbl"></span>
+                                                &nbsp;
+                                                {{ actionlib.dropdown(actions) }}
+                                            </label>
+                                        </th>
+                                       {% for column in column_list %}
+                                            <th class="{{ column_widget_args.get(column).class }}">{{ column_labels.get(column, column) }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for item in data %}
+                                        <tr>
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" id="rowid" name="rowid"
+                                                           class="ace action-checkbox"
+                                                           value="{{ item.id }}"/>
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td class="padding-lr-5">
+                                                <div class="action-buttons">
+                                                    <a class="green" data-toggle="tooltip" data-placement="top" title="修改"
+                                                       onclick="_open_layer_info('{{ url_for('.edit_view') }}?id={{ item.id }}&return_url={{ return_url }}', '修改分类')">
+                                                        <i class="icon-pencil bigger-130"></i>
+                                                    </a>
+                                                    <a class="blue" data-toggle="tooltip" data-placement="top" title="查看下级分类"
+                                                       href="{{ url_for('.list_view') }}?query_type=-1&parent_id=0-{{ item.id }}">
+                                                        <i class="icon-indent-right bigger-130"></i>
+                                                    </a>
+                                                    {% if item.validity == 0 %}
+                                                        <a class="dark" data-toggle="tooltip"
+                                                           data-placement="top" title="上架"
+                                                           href="javascript:operation('{{ url_for('.updown_view') }}', '{{ item.id }}-1', '你确定要上架此记录?');">
+                                                            <i class="icon-upload bigger-130"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="red" data-toggle="tooltip"
+                                                           data-placement="top" title="下架"
+                                                           href="javascript:operation('{{ url_for('.updown_view') }}', '{{ item.id }}-0', '你确定要下架此记录?');">
+                                                            <i class="icon-download bigger-130"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            {% for c in column_list %}
+                                                <td class="{{ column_widget_args.get(c).class }}">
+                                                    {% if c == "image" %}
+                                                        <img src="{{ item[c]|default("", True) }}"
+                                                             height="50px;" width="100px;"/>
+                                                    {% elif c == "validity" %}
+                                                        {% if item[c] %}
+                                                            <span class="label label-success arrowed">正常</span>
+                                                        {% else %}
+                                                            <span class="label label-warning arrowed">注销</span>
+                                                        {% endif %}
+                                                    {% elif c == "banner_type" %}
+                                                        {{ banner_types[item[c]] }}
+                                                    {% else %}
+                                                        {{ item[c]|default("", True) }}
+                                                    {% endif %}
+                                                </td>
+
+                                            {% endfor %}
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="999">
+                                                <div class="text-center">
+                                                    表无记录!
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="page-no-content">
+                                {{ layout.pager(page, num_pages, pager_url) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ actionlib.form(actions, url_for('.action_view')) }}
+    {{ super() }}
+{% endblock %}
+{% block tail %}
+    {{ actionlib.script("至少选择一项", actions, actions_confirmation) }}
+{% endblock %}

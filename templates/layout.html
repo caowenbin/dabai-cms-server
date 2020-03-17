@@ -1,0 +1,155 @@
+{% macro menu() %}
+   <a class="menu-toggler" id="menu-toggler" href="#">
+        <span class="menu-text"></span>
+    </a>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                <a class="btn btn-success" href="/admin/product/create.html">
+                    <i class="icon-plus"></i>发布商品
+                </a>
+                <a class="btn btn-info" href="/admin/group/create.html">
+                    <i class="icon-plus"></i>发布频道
+                </a>
+            </div>
+
+            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                <span class="btn btn-success"></span>
+                <span class="btn btn-info"></span>
+            </div>
+        </div>
+        <ul class="nav nav-list">
+            {%- for item in admin_view.admin.menu() %}
+             {%- if item.is_accessible() and item.is_visible() -%}
+                {% set class_name = item.get_class_name() %}
+                {%- if item.is_active(admin_view) %}
+                <li class="active">
+                {%- else %}
+                <li>
+                {%- endif %}
+                  <a href="{{ item.get_url() }}">
+                      <i class="{{ item.icon_value }}"></i>
+                      <span class="menu-text"> {{ item.name }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+
+            {% endfor %}
+        </ul>
+
+        <div class="sidebar-collapse" id="sidebar-collapse">
+            <i class="icon-double-angle-left" data-icon1="icon-double-angle-left"
+               data-icon2="icon-double-angle-right"></i>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{% macro navbar_header() %}
+    <ul class="nav ace-nav">
+
+        <li class="light-blue">
+            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                <img class="nav-user-photo" src="{{ static_url('avatars/avatar4.png') }}"/>
+								<span class="user-info">
+									<small>欢迎光临,</small>
+									{{ current_user.name }}
+								</span>
+
+                <i class="icon-caret-down"></i>
+            </a>
+
+            <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                <li>
+                    {% set edit_pwd_url = url_for('home.edit_pwd') %}
+                    <a onclick="_open_layer_info('{{ edit_pwd_url }}', '修改密码')" href="#">
+                        <i class="icon-unlock-alt"></i>
+                        修改密码
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('auth.logout') }}">
+                        <i class="icon-off"></i>
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endmacro %}
+
+{% macro pager(page, pages, generator) -%}
+    {% if pages > 1 %}
+        <div class="pagination">
+            <ul>
+                {% set min = page - 3 %}
+                {% set max = page + 3 + 1 %}
+
+                {% if min < 0 %}
+                    {% set max = max - min %}
+                {% endif %}
+                {% if max >= pages %}
+                    {% set min = min - max + pages %}
+                {% endif %}
+
+                {% if min < 0 %}
+                    {% set min = 0 %}
+                {% endif %}
+                {% if max >= pages %}
+                    {% set max = pages %}
+                {% endif %}
+
+                {% if min > 0 %}
+                    <li>
+                        <a href="{{ generator(0) }}">&laquo;</a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:void(0)">&laquo;</a>
+                    </li>
+                {% endif %}
+                {% if page > 0 %}
+                    <li>
+                        <a href="{{ generator(page-1) }}">&lt;</a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:void(0)">&lt;</a>
+                    </li>
+                {% endif %}
+
+                {% for p in range(min, max) %}
+                    {% if page == p %}
+                        <li class="active">
+                            <a href="javascript:void(0)">{{ p + 1 }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ generator(p) }}">{{ p + 1 }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page + 1 < pages %}
+                    <li>
+                        <a href="{{ generator(page + 1) }}">&gt;</a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:void(0)">&gt;</a>
+                    </li>
+                {% endif %}
+                {% if max < pages %}
+                    <li>
+                        <a href="{{ generator(pages - 1) }}">&raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <a href="javascript:void(0)">&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+{%- endmacro %}

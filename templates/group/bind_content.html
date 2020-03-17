@@ -1,0 +1,145 @@
+{% extends 'layer_base.html' %}
+{% block head_css %}
+    <link href="{{ static_url('jquery/chosen/chosen.css') }}" rel="stylesheet">
+    {{ super() }}
+{% endblock %}
+{% block page_content %}
+    {{ super() }}
+    {% set template_content_detail = data.template_content_detail %}
+    <input type="hidden" name="group_template_id"
+           value="{{ data.group_template_id }}">
+    <input type="hidden" name="group_id" value="{{ data.group_id }}">
+    <input type="hidden" name="id"
+           value="{{ template_content_detail.id|default("0", True) }}">
+    <input type="hidden" name="ordering"
+           value="{{ data.ordering|default("0", True) }}">
+    <input type="hidden" name="custom_image_size" value="{{ data.img_size }}">
+
+    <input type="hidden" name="custom_image"
+           value="{{ template_content_detail.custom_image|default('', True) }}">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="custom_title">
+            自定义商品简称 </label>
+
+        <div class="col-sm-9">
+            <input type="text" id="custom_title" name="custom_title"
+                   placeholder="自定义商品简称,最大长度50位,由中文、英文、数字、下划线组成"
+                   value="{{ template_content_detail.custom_title|default("", True) }}"
+                   class="col-xs-10 col-sm-5"
+                   data-easyform="null; length:0 50;char-chinese;"
+                   data-message="最大长度50位,由中文、英文、数字、下划线组成"
+                   data-easytip="class:easy-blue;position:right;"/>
+            <span class="red">(*不填写默认把商品管理中简称作为其值)</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="remark">
+            备注 </label>
+
+        <div class="col-sm-9">
+            <input type="text" id="remark" name="remark" placeholder="最大长度30位,由中文、英文、数字、下划线组成"
+                   class="col-xs-10 col-sm-5" value="{{ template_content_detail.remark|default("", True) }}"
+                   data-easyform="null; length:0 50;char-chinese;"
+                   data-message="最大长度30位,由中文、英文、数字、下划线组成"
+                   data-easytip="class:easy-blue;position:right;"/>
+            <span class="red">(*作为运营者备忘录用的)</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="uploader_button">
+            自定义封面图片 </label>
+
+        <div class="col-sm-9">
+            <button id="uploader_button" type="button"
+                    onclick="upload_custom_image()"
+                    class="btn btn-minier btn-success">
+                <i class="icon-picture">&nbsp;上传图片</i>
+            </button>
+            <div id="uploader_contents" class="uploader_contents"
+                 style="margin:10px 0 0 0;">
+                {% if template_content_detail.custom_image %}
+                    <img src="{{ template_content_detail.custom_image }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="content_type">
+            <span class="red">*</span>内容选项 </label>
+
+        <div class="col-sm-9">
+            <select class="chosen-select col-xs-10 col-sm-4 width-15"
+                    id="content_type"
+                    name="content_type"
+                    data-placeholder=" ">
+                {% for v in data.content_types %}
+                    <option value="{{ v.code }}"
+                            {% if template_content_detail.content_type == v.code %}selected{% endif %}>{{ v.name }}</option>
+                {% endfor %}
+            </select>
+            <select class="chosen-select col-xs-10 col-sm-4" id="content_code"
+                    name="content_code" style="width: 60%"
+                    data-placeholder="-- 无数据可选择,请更改其他选项 --"
+                    data-easyform="regex:\S;"
+                     data-message="请选择对应的内容选项"
+                      data-easytip="class:easy-blue;position:top;">
+                {% for v in data.select_content_list %}
+                    <option value="{{ v.id }}"
+                            {% if template_content_detail.content_code == v.id|string %}selected{% endif %}>{{ v.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right"
+               for="corner_mark_group">
+            角标 </label>
+
+        <div class="col-sm-9">
+
+            <div id="corner_mark_select"
+                 {% if template_content_detail.corner_mark_image %}style="display: none;" {% endif %}>
+                <select class="chosen-select col-xs-10 col-sm-4"
+                        id="corner_mark_group" data="filter_easyform"
+                        name="corner_mark_group" style="width: 50%;"
+                        data-placeholder=" ">
+                    <option value="">&nbsp;</option>
+                    {% for v in data.corner_mark_list %}
+                        <option value="{{ v.group_name }}">{{ v.group_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="update_corner_mark"
+                 {% if template_content_detail.corner_mark_image %}style="display: inline-block"
+                 {% else %}style="display: none"{% endif %}>
+                <img src="{{ template_content_detail.corner_mark_image }}">
+                <button type="button" class="btn btn-minier btn-yellow"
+                        onclick="restart_corner_mark(1)">更改角标
+                </button>
+            </div>
+            <div style="display: none; width: 60px;" id="restart_corner_mark">
+                <button type="button" class="btn btn-minier btn-yellow"
+                        onclick="restart_corner_mark(0)">取消更改
+                </button>
+            </div>
+
+            <div id="corner_mark_image_list" class="corner_mark_image_list"
+                 style="margin:10px 0 30px 0;">
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('jquery/chosen/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ static_url('js/pages/template-bind-content.js') }}"></script>
+{% endblock %}

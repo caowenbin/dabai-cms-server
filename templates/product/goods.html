@@ -1,0 +1,92 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    {{ super() }}
+    <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>发布商品</li>
+        <li class="active">第2步:填写单价及库存</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.step_content(2, query_kwargs.id, query_kwargs.is_edit, query_kwargs.category_id) }}
+
+                    <div class="col-sm-12 padding-left-10">
+                        <h4 id="product-attributes" data-easytip="position:bottom;class:easy-blue;"
+                            data-easytip-message="至少选择一个产品规格">产品规格</h4>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div id="attribute_select_contents" class="padding-left-15">
+                            {% set product_attr_items = data.product_attr_items %}
+                            {% for attr in query_kwargs.attributes %}
+                                <div class="col-sm-6">
+                                    <h5>{{ attr.name }}</h5>
+                                    <ul class="Father_Item{{ loop.index0 }} list-inline">
+                                        {% for attr_item in attr.item_values %}
+                                            <li class="li_width">
+                                                <label>
+                                                    <input type="checkbox"
+                                                           properties="{{ attr.id }}:{{ attr_item.0 }}"
+                                                           property_names="{{ attr.name }}:{{ attr_item.1 }}"
+                                                           value="{{ attr_item.1 }}"
+                                                            {% if attr_item.0|string in product_attr_items %}
+                                                           checked {% endif %}/>{{ attr_item.1 }}
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>                         {% endif %}
+                        <input type="hidden" name="id" value="{{ query_kwargs.id }}">
+                        <input type="hidden" name="is_edit" value="{{ query_kwargs.is_edit }}">
+                        <input type="hidden" name="category_id"
+                               value="{{ query_kwargs.category_id }}">
+                        <div id="attribute_price_stock"
+                             class="col-sm-12 margin-top-20 padding-left-10"></div>
+                        <div class="clearfix">
+                            <div class="col-md-offset-3 col-md-9 margin-top-20">
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-long-arrow-right bigger-110"></i>
+                                    下一步
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('js/product_attribute_group.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        var child_data_tip;
+        function verify_form_data() {
+            if ($('div#attribute_price_stock tr').length == 0) {
+                child_data_tip.show();
+                return false;
+            }
+            return true;
+        }
+        jQuery(function ($) {
+            step.Creat_Table({{ data.product_properties|tojson|safe }});
+            child_data_tip = $('#product-attributes').easytip();
+        })
+    </script>
+{% endblock %}

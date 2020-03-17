@@ -1,0 +1,244 @@
+{% macro template_1(sys_methods, template_contents, is_edit=1) %}
+    <p>
+        <i class="icon-th-large"></i>&nbsp;模板1(<strong class="red">10张轮播图</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default width-840">
+        <ul class="list-unstyled">
+            {% set childs =  template_contents.childs %}
+            {% set group_id = template_contents.group_id %}
+            {% set g_template_id =  template_contents.id|default("0", True) %}
+            {% for i in range(10) %}
+                {% set v = childs[i] %}
+                {% if v %}
+                    {% set _id =  v.id %}
+                    {% set t_c_id =  v.id %}
+                {% else %}
+                    {% set _id =  sys_methods.random_uuid() if is_edit else i %}
+                    {% set t_c_id =  0 %}
+                {% endif %}
+
+                <li id="{{ _id }}" data="{{ group_id }}|{{ g_template_id }}|{{ t_c_id }}|banner|{{ i }}|1824*463"
+                    layer_data="{{ url_for('.template_bind_content_view') }}|绑定轮播图信息|600px|500px"
+                    other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+                    class="col-sm-1 editMode">
+                    <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                            onclick="_open_layer_info('{{ _id }}', 'content');">
+                        <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+                    </button>
+                    {% if t_c_id!=0 %}
+                        <img src="{{ v.custom_image }}">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro template_2(sys_methods, template_contents, is_edit=1) %}
+
+    <p>
+        <i class="icon-th-large"></i>&nbsp;模板2<strong
+            class="red">显图片、标题及价格的2排4列共8个位置</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default templates height-395 width-840">
+        <div class="width-800 height-380">
+            {% set childs =  template_contents.childs %}
+            {% set group_id = template_contents.group_id %}
+            {% set g_template_id =  template_contents.id|default("0", True) %}
+            {% for i in range(8) %}
+                {% set v = childs[i] %}
+                {% if v %}
+                    {% set _id =  v.id %}
+                    {% set t_c_id =  v.id %}
+                {% else %}
+                    {% set _id =  sys_methods.random_uuid() if is_edit else i %}
+                    {% set t_c_id =  0 %}
+                {% endif %}
+
+                <div id="{{ _id }}" data="{{ group_id }}|{{ g_template_id }}|{{ t_c_id }}|product|{{ i }}|602*602"
+                     layer_data="{{ url_for('.template_bind_content_view') }}|绑定商品/文章信息|780px|560px"
+                     other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+                     class="div-content width-188 height-184  margin-bottom-10 editMode">
+                    <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                            onclick="_open_layer_info('{{ _id }}', 'content');">
+                        <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+                    </button>
+                    {% if t_c_id!=0 %}
+                        <img src="{{ v.custom_image }}">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endmacro %}
+
+{% macro template_3(sys_methods, template_contents, is_edit=1) %}
+    <p>
+        <i class="icon-th-large"></i>&nbsp;模板3(<strong class="red">左1大图右4小图</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default templates height-395 width-840">
+        {% set childs =  template_contents.childs %}
+        {% set group_id = template_contents.group_id %}
+        {% set g_template_id =  template_contents.id|default("0", True) %}
+        {% set first_child = childs[0] %}
+
+        {% if first_child %}
+            {% set first_child_id =  first_child.id %}
+            {% set first_child_t_c_id =  first_child.id %}
+        {% else %}
+            {% set first_child_id =  sys_methods.random_uuid() if is_edit else 0 %}
+            {% set first_child_t_c_id =  0 %}
+        {% endif %}
+
+        <div id="{{ first_child_id }}"
+             data="{{ group_id }}|{{ g_template_id }}|{{ first_child_t_c_id }}|product|0|908*908"
+             layer_data="{{ url_for('.template_bind_content_view') }}|绑定商品/文章信息|780px|560px"
+             other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+             class="width-380 height-380 div-content margin-right-15 editMode no-up-down">
+            <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                    onclick="_open_layer_info('{{ first_child_id }}', 'content');">
+                <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+            </button>
+            {% if first_child_t_c_id!=0 %}
+                <img src="{{ first_child.custom_image }}">
+            {% endif %}
+        </div>
+        <div class="width-420 height-380">
+            {% for i in range(1, 5) %}
+                {% set v = childs[i] %}
+                {% if v %}
+                    {% set _id =  v.id %}
+                    {% set t_c_id =  v.id %}
+                {% else %}
+                    {% set _id =  sys_methods.random_uuid() if is_edit else i %}
+                    {% set t_c_id =  0 %}
+                {% endif %}
+
+                <div id="{{ _id }}" data="{{ group_id }}|{{ g_template_id }}|{{ t_c_id }}|product|{{ i }}|448*448"
+                     layer_data="{{ url_for('.template_bind_content_view') }}|绑定商品/文章信息|780px|560px"
+                     other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+                     class="div-content width-200 height-184 margin-right-10 margin-bottom-10 editMode">
+                    <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                            onclick="_open_layer_info('{{ _id }}', 'content');">
+                        <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+                    </button>
+                    {% if t_c_id!=0 %}
+                        <img src="{{ v.custom_image }}">
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro template_4(sys_methods, template_contents, is_edit=1) %}
+    <p>
+        <i class="icon-th-large"></i>&nbsp;模板4(<strong
+            class="red">只显图的2排3列共6个位置</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default templates height-395 width-840">
+        <div class="width-750 height-380 padding-left-60">
+            {% set childs =  template_contents.childs %}
+            {% set group_id = template_contents.group_id %}
+            {% set g_template_id =  template_contents.id|default("0", True) %}
+            {% for i in range(6) %}
+                {% set v = childs[i] %}
+                {% if v %}
+                    {% set _id =  v.id %}
+                    {% set t_c_id =  v.id %}
+                {% else %}
+                    {% set _id =  sys_methods.random_uuid() if is_edit else i %}
+                    {% set t_c_id =  0 %}
+                {% endif %}
+
+                <div id="{{ _id }}" data="{{ group_id }}|{{ g_template_id }}|{{ t_c_id }}|product|{{ i }}|602*602"
+                     layer_data="{{ url_for('.template_bind_content_view') }}|绑定商品/文章信息|780px|560px"
+                     other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+                     class="div-content width-200 height-184 margin-right-30 margin-bottom-10 editMode">
+                    <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                            onclick="_open_layer_info('{{ _id }}', 'content');">
+                        <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+                    </button>
+                    {% if t_c_id!=0 %}
+                        <img src="{{ v.custom_image }}">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro template_5(sys_methods, template_contents, is_edit=1) %}
+    <p>
+        <i class="icon-th-large"></i>&nbsp;模板5(<strong class="red">图文模式,左文右图</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default templates height-395 width-840">
+        <div class="width-380 height-380 margin-right-15 text-center">
+            文字描述
+        </div>
+        {% set childs =  template_contents.childs %}
+        {% set group_id = template_contents.group_id %}
+        {% set g_template_id =  template_contents.id|default("0", True) %}
+        {% set first_child = childs[0] %}
+        {% if first_child %}
+            {% set first_child_id =  first_child.id %}
+            {% set first_child_t_c_id =  first_child.id %}
+        {% else %}
+            {% set first_child_id =  sys_methods.random_uuid() if is_edit else 0 %}
+            {% set first_child_t_c_id =  0 %}
+        {% endif %}
+
+        <div id="{{ first_child_id }}"
+             data="{{ group_id }}|{{ g_template_id }}|{{ first_child_t_c_id }}|product|0|602*602"
+             layer_data="{{ url_for('.template_bind_content_view') }}|绑定商品/文章信息|780px|560px"
+             other_data="{{ url_for('.delete_template_content_view') }}|{{ url_for('.updowntemplatecontent_view') }}"
+             class="width-380 height-380 div-content editMode no-up-down">
+            <button type="button" class="btn btn-minier {% if is_edit %}btn-success{% endif %}"
+                    onclick="_open_layer_info('{{ first_child_id }}', 'content');">
+                <i class="icon-picture">&nbsp;{% if is_edit %}上传内容{% else %}暂无内容{% endif %}</i>
+            </button>
+            {% if first_child_t_c_id!=0 %}
+                <img src="{{ first_child.custom_image }}">
+            {% endif %}
+
+        </div>
+
+    </div>
+{% endmacro %}
+
+{% macro template_6(template_contents, is_edit=1) %}
+      <p>
+        <i class="icon-th-large"></i>&nbsp;模板6(<strong
+            class="red">显图片、标题及价格的多排3列的分页瀑布流的,主要绑定商品分类</strong>)
+        <strong class="margin-left-10">栏目名:</strong>&nbsp;{{ template_contents.column_name|default("-- 暂无输入 --", True) }}
+    </p>
+    <div class="default templates height-100 width-840">
+        {% set group_id = template_contents.group_id %}
+        {% set g_template_id =  template_contents.id|default("0", True) %}
+        <div id="bind_category_list"  class="width-750 height-60 text-center"
+             data="{{ group_id }}|{{ g_template_id }}"
+             layer_data="{{ url_for('.template_bind_content_view') }}|绑定分类信息|780px|500px">
+        {% set childs =  template_contents.childs %}
+        {% set first_child = childs[0] %}
+        {% if first_child %}
+            {% set content =  first_child.custom_image %}
+        {% else %}
+            {% set content =  "暂无绑定分类" %}
+        {% endif %}
+        <div style="height: 30px; line-height: 30px;  width: 100%; margin-bottom: 20px;">{{  content }}</div>
+        {% if is_edit %}
+        <button type="button" class="btn btn-minier btn-success"
+                    onclick="_open_layer_info('bind_category_list', 'category');">
+                <i class="icon-picture">&nbsp;绑定分类</i>
+            </button>
+        {% endif %}
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,31 @@
+{% extends 'layer_base.html' %}
+
+{% block page_content %}
+    {{ super() }}
+    <input type="hidden" name="user_id" value="{{ current_user.user_id|default(0, True) }}">
+    <input type="hidden" name="user_model" value="{{ current_user.user_model|default('', True) }}">
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="old_password">旧密码 </label>
+        <div class="col-sm-9">
+            <input type="password" id="old_password" name="old_password"
+                   placeholder="由6-20位英文、数字、下划线、英文标点符号组成" autocomplete="off"
+                   value=""
+                   class="col-xs-10 col-sm-5"
+                   data-easyform="length:6 20;char-english;"
+                   data-message="请输入旧密码"
+                   data-easytip="class:easy-blue;position:top;left:130px;"/>
+        </div>
+    </div>
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="new_password">新密码 </label>
+        <div class="col-sm-9">
+            <input type="password" id="new_password" name="new_password"
+                   placeholder="由6-20位英文、数字、下划线、英文标点符号组成" autocomplete="off"
+                   value=""
+                   class="col-xs-10 col-sm-5"
+                   data-easyform="length:6 20;char-english;"
+                   data-message="请输入正确的新密码"
+                   data-easytip="class:easy-blue;position:top;left:120px;"/>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'layer_base.html' %}
+
+{% block page_content %}
+    {{ super() }}
+    <div class="form-group default-form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="category_name">品牌名称 </label>
+        <div class="col-sm-9">
+            <input type="text" id="name" name="name" class="col-xs-10 col-sm-9" value=""
+                   placeholder="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                   data-easyform="length:1 15;char-chinese;"
+                   data-message="请输入由1-15位由中文、英文、数字、下划线组成的名字"
+                   data-easytip="class:easy-blue;position:bottom;left:120;"/>
+        </div>
+    </div>
+{% endblock %}

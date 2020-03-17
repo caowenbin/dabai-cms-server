@@ -1,0 +1,243 @@
+# Chinese (Simplified, China) translations for PROJECT.
+# Copyright (C) 2016 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2016-04-05 23:22+0800\n"
+"PO-Revision-Date: 2016-04-05 23:23+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_Hans_CN\n"
+"Language-Team: zh_Hans_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.2.0\n"
+
+msgid "show this help message and exit"
+msgstr "显示此帮助消息并退出"
+
+#: templates/login.html:5
+msgid "CIC"
+msgstr ""
+
+msgid "Please enter your login account or password"
+msgstr "请输入登录帐号或密码."
+
+msgid "Login account or password is incorrect"
+msgstr "登录帐号或密码不正确."
+
+msgid "Warning"
+msgstr "警告!"
+
+msgid "Invalid login account"
+msgstr "无效登录帐户"
+
+msgid "Home"
+msgstr "个人中心"
+
+msgid "AdminManagement"
+msgstr "管理员配置"
+
+msgid "CategoryManagement"
+msgstr "分类管理"
+
+msgid "AttributeManagement"
+msgstr "属性管理"
+
+msgid "SupplierManagement"
+msgstr "供应商管理"
+
+msgid "ChannelManagement"
+msgstr "渠道管理"
+
+msgid "BrandManagement"
+msgstr "品牌管理"
+
+msgid "CornerMarkManagement"
+msgstr "角标管理"
+
+msgid "BannerManagement"
+msgstr "轮播图管理"
+
+msgid "DistributionCityManagement"
+msgstr "配送城市管理"
+
+msgid "ProductManagement"
+msgstr "商品管理"
+
+msgid "AddProduct"
+msgstr "发布商品"
+
+msgid "GroupManagement"
+msgstr "频道管理"
+
+msgid "AddGroup"
+msgstr "发布频道"
+
+msgid "OrderManagement"
+msgstr "订单管理"
+
+msgid "RefundManagement"
+msgstr "退款管理"
+
+msgid "Add"
+msgstr "增加"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Query"
+msgstr "查询"
+
+msgid "View"
+msgstr "详情"
+
+msgid "List"
+msgstr "列表"
+
+msgid "DoNotBuy"
+msgstr "我不想买了"
+
+msgid "InformationError"
+msgstr "购买信息错误"
+
+msgid "OutStock"
+msgstr "卖家缺货"
+
+msgid "Other"
+msgstr "其他原因"
+
+msgid "ToBePaid"
+msgstr "待支付"
+
+msgid "ToBeVerification"
+msgstr "待验证"
+
+msgid "Paid"
+msgstr "已支付"
+
+msgid "Shipped"
+msgstr "已发货"
+
+msgid "Sign"
+msgstr "已签收"
+
+msgid "Canceled"
+msgstr "已取消"
+
+msgid "Refunded"
+msgstr "已退款"
+
+msgid "ProductInformationError"
+msgstr "商品信息描述不符"
+
+msgid "Wrong"
+msgstr "错发"
+
+msgid "LessOrMissing"
+msgstr "少件/漏发"
+
+msgid "PackingOrProductDamaged"
+msgstr "包装/商品破损"
+
+msgid "NotDeliverInAppointedTime"
+msgstr "未按约定时间发货"
+
+msgid "NotReceiverPackage"
+msgstr "快递/物流一直未送到"
+
+msgid "WaitSellerConfirm"
+msgstr "退款协议等待卖家确认"
+
+msgid "SellerRefuseWaitBuyerEdit"
+msgstr "卖家不同意退款协议，等待买家修改"
+
+msgid "WaitCustomerServiceConfirm"
+msgstr "等待客服确认"
+
+msgid "CustomerServiceRefuseWaitBuyerEdit"
+msgstr "等待买家修改"
+
+msgid "RefundAgreeWaitBuyerReturn"
+msgstr "等待买家退货"
+
+msgid "BuyerReturnWaitSellerConfirm"
+msgstr "等待卖家确认收货"
+
+msgid "WaitFinancialAudit"
+msgstr "等待财务审核"
+
+msgid "RefundInProcess"
+msgstr "退款处理中"
+
+msgid "RefundSuccess"
+msgstr "退款成功"
+
+msgid "RefundClose"
+msgstr "退款关闭"
+
+msgid "SyncCmsManagement"
+msgstr "同步到CMS管理"
+
+msgid "SF"
+msgstr "顺丰"
+msgid "ST"
+msgstr "申通"
+msgid "YT"
+msgstr "圆通"
+msgid "ZT"
+msgstr "中通"
+msgid "HTKD"
+msgstr "(百世)汇通"
+msgid "YD"
+msgstr "韵达"
+msgid "ZJS"
+msgstr "宅急送"
+msgid "TT"
+msgstr "天天快递"
+msgid "DBWL"
+msgstr "德邦"
+msgid "YZ"
+msgstr "邮政包裹/平邮"
+msgid "EMS"
+msgstr "EMS快递"
+msgid "EMS_JI"
+msgstr "EMS-国际件"
+msgid "EMS_BJ"
+msgstr "北京EMS"
+
+msgid "GT"
+msgstr "国通"
+msgid "ZTKY"
+msgstr "中铁物流"
+msgid "ZTWL"
+msgstr "中铁快运"
+msgid "QFKD"
+msgstr "全峰快递"
+msgid "JD"
+msgstr "京东快递"
+msgid "RFD"
+msgstr "如风达"
+
+msgid "Created"
+msgstr "运单创建"
+msgid "Confirmed"
+msgstr "运单确认"
+msgid "SeekGoods"
+msgstr "揽件(打包)"
+msgid "DISPATCHING"
+msgstr "派件"
+msgid "SIGNED"
+msgstr "签收"
+msgid "CANCEL"
+msgstr "取消"
+msgid "EXCEPT_CANCEL"
+msgstr "异常"

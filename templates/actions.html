@@ -1,0 +1,37 @@
+{% macro dropdown(actions) -%}
+    <div class="inline position-relative">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+            <i class="icon-caret-down bigger-125 middle"></i>
+        </a>
+
+        <ul class="dropdown-menu dropdown-lighter dropdown-100">
+            {% for p in actions %}
+                <li>
+                    <a href="javascript:void(0)"
+                       onclick="return modelActions.execute('{{ p[0] }}');">{{p[1] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endmacro %}
+
+{% macro form(actions, url) %}
+    {% if actions %}
+    <form id="action_form" action="{{ url }}" method="POST" style="display: none">
+        {% if csrf_token %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        <input type="hidden" id="return_url" name="return_url" value="{{ return_url }}">
+        <input type="hidden" id="action" name="action" />
+    </form>
+    {% endif %}
+{% endmacro %}
+
+{% macro script(message, actions, actions_confirmation) %}
+    {% if actions %}
+    <script src="{{static_url('js/actions.js')}}"></script>
+    <script language="javascript">
+        var modelActions = new AdminModelActions({{ message|tojson|safe }}, {{ actions_confirmation|tojson|safe}});
+    </script>
+    {% endif %}
+{% endmacro %}

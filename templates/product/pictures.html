@@ -1,0 +1,129 @@
+{% import 'product/step.html' as steplib with context %}
+{% extends 'base.html' %}
+{% block head_css %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url('webuploader/webuploader.css') }}">
+    {{ super() }}
+{% endblock %}
+{% block breadcrumb %}
+    {{ super() }}
+     <li><a href="{{ url_for('.list_view') }}">商品管理</a></li>
+        <li>发布商品</li>
+        <li class="active">第3步:上传图片</li>
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    {{ steplib.step_content(3, query_kwargs.id, query_kwargs.is_edit, query_kwargs.category_id) }}
+
+                    <form class="form-horizontal" name="pop" role="form" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% endif %}
+                        <input type="hidden" name="category_id"
+                               value="{{ query_kwargs.category_id }}">
+                        <input type="hidden" name="is_edit" value="{{ query_kwargs.is_edit }}">
+                        <input type="hidden" name="id" value="{{ query_kwargs.id }}">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"
+                                   for="form-field-1">
+                                货品图片 </label>
+
+                            <div class="col-sm-9">
+                                <div id="filePicker" data-easytip="position:bottom;class:easy-blue;"
+                                     data-easytip-message="必须至少成功上传2张货品图片"></div>
+                                <span style="color:red;">不选择封面图，则默认第一个图片为货品封面图, 每张货品图片限1M, 最多限上传11张。</span>
+                                <div id="uploader" class="wu-example">
+                                    <div class="queueList filled">
+                                        <ul class="filelist">
+                                            {% for p in data %}
+                                                <li name="WU_FILE_{{ loop.index0 }}"
+                                                    class="state-complete">
+                                                    <p class="title {% if p.label == 0 %}li-feng{% endif %}"></p>
+                                                    <input type="checkbox"
+                                                           name="cover_page"
+                                                           class="hide"
+                                                           value="{{ p.label }}"
+                                                           checked="">
+                                                    <input type="hidden" name="picture_id"
+                                                           id="picture_id"
+                                                           value="{{ p.id }}">
+                                                    <input type="checkbox"
+                                                           name="picture_url" class="hide"
+                                                           value="{{ p.image }}"
+                                                           checked="">
+                                                    <p class="imgWrap">
+                                                        <img src="{{ p.image }}"/>
+                                                    <p class="progress">
+                                                        <span style="display: none; width: 0px;"></span>
+                                                    </p>
+                                                    <div class="file-panel" style="height: 0px;">
+                                                        <span class="feng margin-right-5">设封面</span>
+                                                        <span class="cancel">删除</span>
+                                                    </div>
+                                                    <span class="success"></span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="statusBar" style="display:none;">
+                                        <div class="progress">
+                                            <span class="text">0%</span>
+                                            <span class="percentage"></span>
+                                        </div>
+                                        <div class="info"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix margin-top-20">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info uploadBtn hide" type="button">
+                                    <i class="icon-ok bigger-110"></i>
+                                    开始上传
+                                </button>
+                                <button class="btn btn-info" type="button" id="form_submit">
+                                    <i class="icon-long-arrow-right bigger-110"></i>
+                                    图片上传成功, 下一步
+                                </button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block tail_js %}
+    {{ super() }}
+    <script type="text/javascript"
+            src="{{ static_url('webuploader/webuploader.nolog.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('webuploader/images_upload.js') }}"></script>
+{% endblock %}
+
+{% block tail %}
+    <script type="text/javascript">
+        uploader.options.swf = "{{ static_url('webuploader/Uploader.swf') }}";
+        uploader.options.server = '{{ url_for('uploader.upload_images_view') }}?p=product';
+        uploader.options.fileNumLimit = 11;
+        var child_data_tip;
+        function verify_form_data() {
+            if ($('div#uploader ul.filelist>li>span.success').length < 2) {
+                child_data_tip.show();
+                return false;
+            }
+            return true;
+        }
+
+        jQuery(function ($) {
+            child_data_tip = $('#filePicker').easytip();
+        });
+    </script>
+{% endblock %}
