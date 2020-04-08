@@ -1,7 +1,11 @@
 采用flask实现简单的电商cms管理，主要包括渠道、分类、频道（栏目）、商品、订单等管理
 
 ### 效果图
-![image](https://github.com/caowenbin/dabai-cms-server/blob/master/doc/20200317172322.jpg)
-![image](https://github.com/caowenbin/dabai-cms-server/blob/master/doc/20200317172435.jpg)
-![image](https://github.com/caowenbin/dabai-cms-server/blob/master/doc/20200317172541.jpg)
-![image](https://github.com/caowenbin/dabai-cms-server/blob/master/doc/20200317172631.jpg)
+![image](./doc/20200317172322.jpg)
+(个人中心)
+![image](./doc/20200317172435.jpg)
+（发布商品第1步：基本信息）
+![image](./doc/20200317172541.jpg)
+（发布商品第2步：属性、库存、价格）
+![image](./doc/20200317172631.jpg)
+（频道（栏目）创建）
